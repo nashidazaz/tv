@@ -70,16 +70,42 @@
           Free download, lightweight, and fully optimized for D-pad remote controls.
         </p>
 
-        <!-- Main Action (Download Button) -->
-        <a href="nashidtv.apk" id="download-btn" class="download-btn" autofocus download="nashidtv.apk">
-          <div class="btn-title">
-            <svg class="download-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
-            </svg>
-            <span>Download APK</span>
+        <!-- Main Action (Download Buttons Container) -->
+        <div class="download-container">
+          <!-- Main APK -->
+          <a href="nashidtv.apk" id="download-btn-nashid" class="download-btn primary-btn" autofocus download="nashidtv.apk">
+            <div class="btn-title">
+              <svg class="download-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+              </svg>
+              <span>Download Nashid TV</span>
+            </div>
+            <span class="btn-sub">Version 1.1.04 • 51 MB • TV APK</span>
+          </a>
+
+          <!-- Extra APKs Grid -->
+          <div class="download-grid">
+            <a href="ls-tv.apk" id="download-btn-lstv" class="download-btn secondary-btn" download="ls-tv.apk">
+              <div class="btn-title">
+                <svg class="download-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+                </svg>
+                <span>Download LS TV</span>
+              </div>
+              <span class="btn-sub">12 MB • TV APK</span>
+            </a>
+
+            <a href="Sportzfy_v26.apk" id="download-btn-sportzfy" class="download-btn accent-btn" download="Sportzfy_v26.apk">
+              <div class="btn-title">
+                <svg class="download-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+                </svg>
+                <span>Download Sportzfy</span>
+              </div>
+              <span class="btn-sub">v26 • 15 MB • TV APK</span>
+            </a>
           </div>
-          <span class="btn-sub">Version 1.1.04 • 51 MB • For Android TV</span>
-        </a>
+        </div>
       </div>
 
       <!-- Right Pane: Features and Installation Guide -->
@@ -108,10 +134,10 @@
 
         <!-- Simple TV Installation Guide -->
         <section class="guide">
-          <h3>How to Install NashidTV on Android TV</h3>
+          <h3>How to Install TV APKs on Android TV</h3>
           <ol>
-            <li>Click the <strong>Download APK</strong> button on your TV browser.</li>
-            <li>Open the downloaded <code>nashidtv.apk</code> from your downloads list or using a File Manager app.</li>
+            <li>Click the download button for your preferred app above.</li>
+            <li>Open the downloaded APK file (e.g., <code>nashidtv.apk</code>, <code>ls-tv.apk</code>, or <code>Sportzfy_v26.apk</code>) from your downloads list or using a File Manager app.</li>
             <li>
               If your TV blocks the installation with an <em>"Unknown Sources"</em> warning, 
               go to your TV's <strong>Settings &gt; Security &amp; Restrictions &gt; Unknown Sources</strong>, 
@@ -131,7 +157,7 @@
   <!-- Auto-focus script for TV Remote Control D-pad support -->
   <script>
     window.addEventListener('DOMContentLoaded', () => {
-      const downloadBtn = document.getElementById('download-btn');
+      const downloadBtn = document.getElementById('download-btn-nashid');
       if (downloadBtn) {
         // Force focus on load so D-pad selects it immediately (removed scrollIntoView to prevent logo cutoff)
         downloadBtn.focus();
