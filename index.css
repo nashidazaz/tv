@@ -308,6 +308,89 @@ h1 {
   color: var(--text-color);
 }
 
+/* TV Settings Shortcuts Section */
+.settings-shortcuts {
+  margin-top: 24px;
+  text-align: left;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.settings-shortcuts h3 {
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #3b82f6;
+}
+
+.shortcut-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  line-height: 1.45;
+}
+
+.shortcut-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.shortcut-btn {
+  padding: 14px 24px;
+  font-size: 1.05rem;
+  border-radius: 12px;
+  font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 100%;
+  max-width: 100%;
+}
+
+.fallback-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+}
+
+.fallback-grid .shortcut-btn {
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  border-radius: 10px;
+}
+
+.primary-shortcut {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
+}
+
+.primary-shortcut:focus,
+.primary-shortcut:hover {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  transform: translateY(-2px) scale(1.02);
+  border-color: #ffffff;
+  box-shadow: 0 0 25px rgba(59, 130, 246, 0.5);
+}
+
+.secondary-shortcut {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.secondary-shortcut:focus,
+.secondary-shortcut:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px) scale(1.02);
+  border-color: #ffffff;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+}
+
 /* Footer info */
 footer {
   margin-top: 32px;
@@ -454,6 +537,42 @@ footer {
 
   .guide li {
     margin-bottom: 6px;
+  }
+
+  .settings-shortcuts {
+    margin-top: 0;
+    padding: 16px 20px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.01);
+  }
+
+  .settings-shortcuts h3 {
+    font-size: 1rem;
+    margin-bottom: 4px;
+  }
+
+  .shortcut-desc {
+    font-size: 0.8rem;
+    margin-bottom: 12px;
+  }
+
+  .shortcut-grid {
+    gap: 8px;
+  }
+
+  .shortcut-btn {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    border-radius: 10px;
+  }
+
+  .fallback-grid {
+    gap: 8px;
+  }
+
+  .fallback-grid .shortcut-btn {
+    padding: 8px 12px;
+    font-size: 0.78rem;
   }
 
   footer {

@@ -28,7 +28,7 @@
   <meta property="twitter:image" content="https://nashidazaz.github.io/tv/screenshot.png">
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="index.css?v=1.0.1">
+  <link rel="stylesheet" href="index.css?v=1.0.2">
   
   <!-- Favicon icon -->
   <link rel="icon" type="image/png" href="favicon.png">
@@ -144,6 +144,25 @@
               turn on permission for your browser, and click install again.
             </li>
           </ol>
+        </section>
+
+        <!-- TV Settings Shortcuts -->
+        <section class="settings-shortcuts">
+          <h3>TV Settings Shortcuts</h3>
+          <p class="shortcut-desc">If you cannot find the "Unknown Sources" setting manually on your TV, click the shortcut below to open the permission settings screen directly:</p>
+          <div class="shortcut-grid">
+            <a href="intent:#Intent;action=android.settings.MANAGE_UNKNOWN_APP_SOURCES;end" id="btn-intent-unknown" class="download-btn shortcut-btn primary-shortcut">
+              <span>Open "Install Unknown Apps" Settings</span>
+            </a>
+            <div class="fallback-grid">
+              <a href="intent:#Intent;action=android.settings.SECURITY_SETTINGS;end" id="btn-intent-security" class="download-btn shortcut-btn secondary-shortcut">
+                <span>Security Settings (Fallback)</span>
+              </a>
+              <a href="intent:#Intent;action=android.settings.SETTINGS;end" id="btn-intent-general" class="download-btn shortcut-btn secondary-shortcut">
+                <span>General Settings (Fallback)</span>
+              </a>
+            </div>
+          </div>
         </section>
       </div>
 
