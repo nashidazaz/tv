@@ -890,18 +890,113 @@
       requestAnimationFrame(pollGamepad);
     }
 
+    // ----------------------------------------------------
+    // SILENT BACKGROUND REAL THROUGHPUT SPEED BENCHMARK ENGINE
+    // ----------------------------------------------------
+    let activeMirror = 'ghfast';
+    let manualOverride = false;
+    const testAbortController = new AbortController();
+
+    const PILL_DEFAULT_LABELS = {
+      ghfast: '⚡ ghfast.top',
+      ghproxy: '🚀 gh-proxy.com',
+      ghproxy_org: '🚀 gh-proxy.org',
+      ghddlc: '🚀 gh.ddlc.top',
+      direct: '🌐 Direct'
+    };
+
+    function updatePillStatus(key, speedMBps, pingMs) {
+      const btn = document.querySelector(`[data-mirror="${key}"]`);
+      if (!btn) return;
+      const label = PILL_DEFAULT_LABELS[key] || key;
+      if (speedMBps > 0) {
+        const speedFormatted = speedMBps >= 1.0 ? `${speedMBps.toFixed(1)} MB/s` : `${(speedMBps * 1024).toFixed(0)} KB/s`;
+        btn.textContent = `${label} (${speedFormatted})`;
+      } else {
+        btn.textContent = `${label} (${pingMs}ms)`;
+      }
+    }
+
+    async function runBackgroundSpeedBenchmark() {
+      // 220KB asset test to measure exact throughput with zero data waste
+      const TEST_ASSET = 'icons/sportzfy.png?speedtest=' + Date.now();
+      const mirrorKeys = ['ghfast', 'ghproxy', 'ghproxy_org', 'ghddlc', 'direct'];
+      const results = {};
+
+      const testPromises = mirrorKeys.map(async (key) => {
+        const mirror = MIRRORS[key];
+        const url = (key === 'direct') ? RAW_GITHUB_BASE + TEST_ASSET : mirror.prefix + TEST_ASSET;
+
+        const startTime = performance.now();
+        try {
+          const res = await fetch(url, {
+            signal: testAbortController.signal,
+            cache: 'no-store'
+          });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+
+          const blob = await res.blob();
+          const durationSec = (performance.now() - startTime) / 1000;
+          const sizeMB = blob.size / (1024 * 1024);
+          const speedMBps = sizeMB / Math.max(durationSec, 0.05);
+          const pingMs = Math.round(durationSec * 1000);
+
+          results[key] = { speedMBps, pingMs, success: true };
+          updatePillStatus(key, speedMBps, pingMs);
+        } catch (e) {
+          if (e.name !== 'AbortError') {
+            results[key] = { speedMBps: 0, pingMs: 9999, success: false };
+          }
+        }
+      });
+
+      await Promise.allSettled(testPromises);
+
+      // Auto-select fastest winner if user has not manually overridden
+      if (!manualOverride && !testAbortController.signal.aborted) {
+        let bestKey = 'ghfast';
+        let maxSpeed = -1;
+
+        for (const [k, data] of Object.entries(results)) {
+          if (data.success && data.speedMBps > maxSpeed) {
+            maxSpeed = data.speedMBps;
+            bestKey = k;
+          }
+        }
+
+        if (bestKey && results[bestKey]?.success) {
+          updateDownloadLinks(bestKey);
+          showInputBadge(`⚡ Optimal Mirror Selected: ${MIRRORS[bestKey].name}`);
+        }
+      }
+    }
+
     // Initialize
     window.addEventListener('DOMContentLoaded', () => {
       let savedMirror = 'ghfast';
       try {
         savedMirror = localStorage.getItem('nashid_download_mirror') || 'ghfast';
       } catch (e) {}
+      
+      // 1. Instant Default at 0ms (ghfast.top)
       updateDownloadLinks(savedMirror);
 
+      // If user manually picks a mirror
       document.querySelectorAll('.pill-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.preventDefault();
-          updateDownloadLinks(btn.getAttribute('data-mirror'));
+          manualOverride = true;
+          testAbortController.abort(); // Cancel any ongoing background test
+          const key = btn.getAttribute('data-mirror');
+          updateDownloadLinks(key);
+          showInputBadge(`⚡ Mirror set to ${MIRRORS[key]?.name || key}`);
+        });
+      });
+
+      // If user starts downloading immediately, abort background test to dedicate 100% bandwidth to download
+      document.querySelectorAll('.app-card').forEach(card => {
+        card.addEventListener('click', () => {
+          testAbortController.abort();
         });
       });
 
@@ -917,6 +1012,9 @@
 
       // Start Gamepad API Loop
       requestAnimationFrame(pollGamepad);
+
+      // Start Silent Background Throughput Speed Test (after 100ms idle)
+      setTimeout(runBackgroundSpeedBenchmark, 150);
     });
 
     window.addEventListener('gamepadconnected', (e) => {
