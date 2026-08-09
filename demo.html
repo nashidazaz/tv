@@ -894,7 +894,7 @@
     }
 
     // ----------------------------------------------------
-    // SILENT BACKGROUND REAL THROUGHPUT SPEED BENCHMARK ENGINE
+    // HIGH-PRECISION RANGE THROUGHPUT SPEED BENCHMARK ENGINE
     // ----------------------------------------------------
     let activeMirror = 'ghfast';
     let manualOverride = false;
@@ -909,21 +909,52 @@
       direct: '🌐 Direct'
     };
 
-    function updatePillStatus(key, speedMBps, pingMs) {
-      const btn = document.querySelector(`[data-mirror="${key}"]`);
-      if (!btn) return;
-      const label = PILL_DEFAULT_LABELS[key] || key;
-      if (speedMBps > 0) {
-        const speedFormatted = speedMBps >= 1.0 ? `${speedMBps.toFixed(1)} MB/s` : `${(speedMBps * 1024).toFixed(0)} KB/s`;
-        btn.textContent = `${label} (${speedFormatted})`;
+    function formatSpeed(mbps) {
+      if (mbps >= 1.0) {
+        return `${mbps.toFixed(1)} Mbps`;
       } else {
-        btn.textContent = `${label} (${pingMs}ms)`;
+        return `${(mbps * 1000).toFixed(0)} Kbps`;
       }
     }
 
+    function updatePillStatus(key, speedMbps) {
+      const btn = document.querySelector(`[data-mirror="${key}"]`);
+      if (!btn) return;
+      const label = PILL_DEFAULT_LABELS[key] || key;
+      if (speedMbps > 0) {
+        btn.textContent = `${label} (${formatSpeed(speedMbps)})`;
+      }
+    }
+
+    async function measureProxyThroughput(url, signal) {
+      const t0 = performance.now();
+      const res = await fetch(url, {
+        headers: { 'Range': 'bytes=0-1572863' }, // 1.5 MB chunk slice for true TCP ramp-up
+        signal: signal,
+        cache: 'no-store'
+      });
+      if (!res.ok && res.status !== 206) throw new Error('HTTP ' + res.status);
+
+      const reader = res.body.getReader();
+      let receivedBytes = 0;
+      let firstByteTime = null;
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        if (firstByteTime === null) firstByteTime = performance.now();
+        receivedBytes += value.byteLength;
+      }
+
+      const durationSec = Math.max((performance.now() - (firstByteTime || t0)) / 1000, 0.05);
+      const sizeMB = receivedBytes / (1024 * 1024);
+      const mbps = (sizeMB * 8) / durationSec; // MegaBits per second (ISP Standard)
+
+      return { mbps, bytes: receivedBytes };
+    }
+
     async function runBackgroundSpeedBenchmark() {
-      // 220KB asset test to measure exact throughput with zero data waste
-      const TEST_ASSET = 'icons/sportzfy.png?speedtest=' + Date.now();
+      const TEST_ASSET = 'ls-tv.apk?speedtest=' + Date.now();
       
       // ONLY PROXY MIRRORS ARE ELIGIBLE FOR AUTO-SELECTION (Direct is excluded per user preference!)
       const proxyKeysToTest = ['ghfast', 'ghproxy', 'ghproxy_org', 'ghproxy_net', 'cf_ghproxy'];
@@ -933,25 +964,13 @@
         const mirror = MIRRORS[key];
         const url = mirror.prefix + TEST_ASSET;
 
-        const startTime = performance.now();
         try {
-          const res = await fetch(url, {
-            signal: testAbortController.signal,
-            cache: 'no-store'
-          });
-          if (!res.ok) throw new Error('HTTP ' + res.status);
-
-          const blob = await res.blob();
-          const durationSec = (performance.now() - startTime) / 1000;
-          const sizeMB = blob.size / (1024 * 1024);
-          const speedMBps = sizeMB / Math.max(durationSec, 0.05);
-          const pingMs = Math.round(durationSec * 1000);
-
-          results[key] = { speedMBps, pingMs, success: true };
-          updatePillStatus(key, speedMBps, pingMs);
+          const { mbps } = await measureProxyThroughput(url, testAbortController.signal);
+          results[key] = { mbps, success: true };
+          updatePillStatus(key, mbps);
         } catch (e) {
           if (e.name !== 'AbortError') {
-            results[key] = { speedMBps: 0, pingMs: 9999, success: false };
+            results[key] = { mbps: 0, success: false };
           }
         }
       });
@@ -964,15 +983,15 @@
         let maxSpeed = -1;
 
         for (const [k, data] of Object.entries(results)) {
-          if (data.success && data.speedMBps > maxSpeed) {
-            maxSpeed = data.speedMBps;
+          if (data.success && data.mbps > maxSpeed) {
+            maxSpeed = data.mbps;
             bestKey = k;
           }
         }
 
         if (bestKey && results[bestKey]?.success) {
           updateDownloadLinks(bestKey);
-          showInputBadge(`⚡ Optimal Mirror: ${MIRRORS[bestKey].name}`);
+          showInputBadge(`⚡ Optimal Mirror: ${MIRRORS[bestKey].name} (${formatSpeed(results[bestKey].mbps)})`);
         }
       }
     }
