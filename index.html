@@ -9,7 +9,7 @@
   <title>Nashid TV - Official Download | Android TV APK (NashidTV)</title>
   <meta name="title" content="Nashid TV - Official Download | Android TV APK (NashidTV)">
   <meta name="description" content="Looking for NashidTV? Download the official Nashid TV APK for Smart TV, Android TV Box, and Firestick. Direct download link for Nashid TV app.">
-  <meta name="keywords" content="nashid tv, nashidtv, nashid tv apk, nashidtv apk, download nashid tv, nashid tv app, android tv app, smart tv media player, apk download">
+  <meta name="keywords" content="nashid tv, nashidtv, nashid tv apk, nashidtv apk, download nashid tv, nashid tv app, android tv app, smart tv media player, apk download, iptv player, live tv">
   <meta name="robots" content="index, follow">
   
   <!-- Open Graph / Facebook -->
@@ -27,11 +27,13 @@
   <meta property="twitter:description" content="Looking for NashidTV? Download the official Nashid TV APK for Smart TV, Android TV Box, and Firestick. Direct download link for Nashid TV app.">
   <meta property="twitter:image" content="https://nashidazaz.github.io/tv/screenshot.png">
 
-  <!-- Stylesheet -->
-  <link rel="stylesheet" href="index.css?v=1.0.5">
-  
   <!-- Favicon icon -->
   <link rel="icon" type="image/png" href="favicon.png">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Structured Data JSON-LD for Google Site Name -->
   <script type="application/ld+json">
@@ -43,260 +45,919 @@
     "url": "https://nashidazaz.github.io/tv/"
   }
   </script>
+  
+  <style>
+    :root {
+      --bg-color: #0c0f17;
+      --card-bg: rgba(255, 255, 255, 0.04);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-cyan: #00f2fe;
+      --accent-blue: #38bdf8;
+      --focus-bg: #ffffff;
+      --focus-text: #090d16;
+      --focus-sub: #475569;
+      --focus-shadow: 0 0 45px rgba(255, 255, 255, 0.45), 0 16px 36px rgba(0, 0, 0, 0.6);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
+      padding: 30px 20px;
+    }
+
+    /* Ambient Google TV Background Glow */
+    body::before {
+      content: "";
+      position: fixed;
+      top: -30%;
+      left: -20%;
+      width: 140%;
+      height: 140%;
+      background: radial-gradient(circle at 50% 20%, rgba(56, 189, 248, 0.12) 0%, transparent 55%),
+                  radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.08) 0%, transparent 50%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 960px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      z-index: 1;
+    }
+
+    /* Minimalist Header */
+    .header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 10px;
+    }
+
+    .tv-logo-badge {
+      width: 64px;
+      height: 64px;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.25);
+    }
+
+    .tv-logo-badge svg {
+      width: 36px;
+      height: 36px;
+      fill: #38bdf8;
+    }
+
+    h1 {
+      font-size: 2.35rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 520px;
+      line-height: 1.45;
+      font-weight: 300;
+    }
+
+    /* Grid layout for Apps (Google TV 2-Column Responsive Grid) */
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      width: 100%;
+      max-width: 880px;
+    }
+
+    /* Google TV Signature App Card */
+    .app-card {
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-decoration: none;
+      color: var(--text-main);
+      outline: none;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .card-icon-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: #141724;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+      transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .card-icon-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 13px;
+      transition: transform 0.24s ease;
+    }
+
+    .card-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 3px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .app-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: color 0.24s ease;
+    }
+
+    .app-meta {
+      font-size: 0.82rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.24s ease;
+    }
+
+    .app-tag {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      transition: all 0.24s ease;
+    }
+
+    /* ----------------------------------------------------
+       THE GOOGLE TV SIGNATURE FOCUS EFFECT (Pure Contrast)
+       ---------------------------------------------------- */
+    .app-card:focus,
+    .app-card.focused {
+      background: var(--focus-bg) !important;
+      color: var(--focus-text) !important;
+      border-color: #ffffff !important;
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: var(--focus-shadow);
+      z-index: 10;
+    }
+
+    .app-card:focus .card-icon-wrap,
+    .app-card.focused .card-icon-wrap {
+      background: #0f131c !important;
+      border-color: rgba(15, 23, 42, 0.2) !important;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    }
+
+    .app-card:focus .card-icon-img,
+    .app-card.focused .card-icon-img {
+      transform: scale(1.06);
+    }
+
+    .app-card:focus .app-title,
+    .app-card.focused .app-title {
+      color: #090d16;
+    }
+
+    .app-card:focus .app-meta,
+    .app-card.focused .app-meta {
+      color: #475569;
+    }
+
+    .app-card:focus .app-tag,
+    .app-card.focused .app-tag {
+      background: rgba(15, 23, 42, 0.1);
+      color: #0f172a;
+    }
+
+    .app-card:active {
+      transform: scale(0.98);
+    }
+
+    /* Compact Accelerator & Settings Utility Bar */
+    .utility-bar {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      max-width: 880px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 10px 16px;
+    }
+
+    .accelerator-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: nowrap;
+    }
+
+    .utility-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+    }
+
+    .mirror-pills {
+      display: flex;
+      gap: 6px;
+      flex-wrap: nowrap;
+    }
+
+    .pill-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 0.76rem;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s ease;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .pill-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+    }
+
+    .pill-btn:focus,
+    .pill-btn.focused {
+      background: #ffffff !important;
+      color: #0f172a !important;
+      border-color: #ffffff !important;
+      box-shadow: 0 0 16px rgba(255, 255, 255, 0.6);
+      transform: scale(1.05);
+    }
+
+    .pill-btn.active {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: #38bdf8;
+      color: #38bdf8;
+      font-weight: 600;
+    }
+
+    .settings-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+      padding: 6px 14px;
+      border-radius: 10px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      outline: none;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .settings-btn:focus,
+    .settings-btn.focused {
+      background: #ffffff !important;
+      color: #0f172a !important;
+      border-color: #ffffff !important;
+      box-shadow: 0 0 16px rgba(255, 255, 255, 0.6);
+      transform: scale(1.05);
+    }
+
+    /* Trust Footer */
+    .trust-footer {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #64748b;
+      font-size: 0.82rem;
+      margin-top: 4px;
+    }
+
+    .trust-footer svg {
+      width: 14px;
+      height: 14px;
+      fill: #10b981;
+    }
+
+    /* Smart Input & Device Detection Toast Badge */
+    .input-mode-badge {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-size: 0.78rem;
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      z-index: 100;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .input-mode-badge.hidden {
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 680px) {
+      .apps-grid {
+        grid-template-columns: 1fr;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+      .utility-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
 </head>
 <body>
 
   <div class="container">
-    <main class="card">
+    
+    <!-- Minimalist Header -->
+    <header class="header">
+      <div class="tv-logo-badge">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M21 2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7l-2 3v1h8v-1l-2-3h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H3V4h18v12z"/>
+          <path d="M10 7.5v7l6-3.5z" fill="#38bdf8"/>
+        </svg>
+      </div>
+      <h1>Nashid TV</h1>
+      <p class="subtitle">Optimized for Android TV. Fast, lightweight, and perfect for D-pad remote control.</p>
+    </header>
+
+    <!-- Google TV Signature App Grid (4 Rows x 2 Cols) -->
+    <main class="apps-grid" id="apps-grid" role="region" aria-label="TV Applications">
       
-      <!-- Left Pane: Logo, Header, Tagline, Download Button -->
-      <div class="left-pane">
-        <!-- TV Logo Container -->
-        <div class="logo-container">
-          <div class="logo-glow"></div>
-          <svg class="tv-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <!-- Outline of a modern Smart TV -->
-            <path d="M21 2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7l-2 3v1h8v-1l-2-3h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H3V4h18v12z"/>
-            <!-- Play symbol inside TV screen -->
-            <path d="M10 7.5v7l6-3.5z" fill="#00f2fe"/>
-          </svg>
+      <!-- Row 0, Col 0: Nashid TV -->
+      <a href="nashidtv.apk" class="app-card" id="app-nashid" download="nashidtv.apk" tabindex="0" autofocus>
+        <div class="card-icon-wrap">
+          <img src="icons/nashidtv.png" alt="Nashid TV" class="card-icon-img" loading="eager">
         </div>
-
-        <!-- App Name & Description -->
-        <h1>Nashid TV</h1>
-        <p class="tagline">
-          Download the official <strong>Nashid TV APK</strong> (also searched as <strong>NashidTV</strong>). 
-          The ultimate media experience for your Smart TV, Android TV Box, and Fire TV. 
-          Free download, lightweight, and fully optimized for D-pad remote controls.
-        </p>
-
-        <!-- Main Action (Download Buttons Container) -->
-        <div class="download-container">
-          <!-- Download Speed Accelerator Card -->
-          <div class="accelerator-card">
-            <div class="accelerator-header">
-              <div class="accelerator-title">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                  <path d="M7 2v11h3v9l7-12h-4l4-8z"/>
-                </svg>
-                <span>Download Accelerator</span>
-              </div>
-              <span id="mirror-status-badge" class="mirror-badge accelerated">⚡ ghfast (Fast CDN)</span>
-            </div>
-            <div class="mirror-selector" role="group" aria-label="Download Server Accelerator">
-              <button type="button" class="mirror-btn active" data-mirror="ghfast" id="mirror-btn-ghfast" title="Fast CDN Mirror (Recommended)">
-                <span>⚡ ghfast.top</span>
-              </button>
-              <button type="button" class="mirror-btn" data-mirror="ghproxy" id="mirror-btn-ghproxy" title="Global Proxy Mirror 1">
-                <span>🚀 gh-proxy.com</span>
-              </button>
-              <button type="button" class="mirror-btn" data-mirror="ghproxy_org" id="mirror-btn-ghproxy-org" title="Global Proxy Mirror 2">
-                <span>🚀 gh-proxy.org</span>
-              </button>
-              <button type="button" class="mirror-btn" data-mirror="ghddlc" id="mirror-btn-ghddlc" title="DDLC Proxy Mirror 3">
-                <span>🚀 gh.ddlc.top</span>
-              </button>
-              <button type="button" class="mirror-btn" data-mirror="direct" id="mirror-btn-direct" title="Direct GitHub Default">
-                <span>🌐 Direct</span>
-              </button>
-            </div>
-            <p class="mirror-hint">Bypasses ISP throttling for high-speed APK downloads.</p>
-          </div>
-
-          <!-- Main APK -->
-          <a href="nashidtv.apk" id="download-btn-nashid" class="download-btn primary-btn" autofocus download="nashidtv.apk">
-            <div class="btn-title">
-              <svg class="download-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
-              </svg>
-              <span>Download Nashid TV</span>
-            </div>
-            <span class="btn-sub">Version 1.1.04 • 51 MB • TV APK</span>
-          </a>
-
-          <!-- Extra APKs Grid -->
-          <div class="download-grid">
-            <a href="ls-tv.apk" id="download-btn-lstv" class="download-btn secondary-btn" download="ls-tv.apk">
-              <div class="btn-title">
-                <svg class="download-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                  <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
-                </svg>
-                <span>Download LS TV</span>
-              </div>
-              <span class="btn-sub">12 MB • TV APK</span>
-            </a>
-
-            <a href="Sportzfy_v28.apk" id="download-btn-sportzfy" class="download-btn accent-btn" download="Sportzfy_v28.apk">
-              <div class="btn-title">
-                <svg class="download-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                  <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
-                </svg>
-                <span>Download Sportzfy</span>
-              </div>
-              <span class="btn-sub">v28 • 15 MB • TV APK</span>
-            </a>
+        <div class="card-content">
+          <span class="app-title">Nashid TV</span>
+          <div class="app-meta">
+            <span>v1.1.04</span>
+            <span>•</span>
+            <span>51 MB</span>
+            <span class="app-tag">Main App</span>
           </div>
         </div>
-      </div>
+      </a>
 
-      <!-- Right Pane: Features and Installation Guide -->
-      <div class="right-pane">
-        <!-- Quick Android TV Features -->
-        <div class="features">
-          <div class="feature-item">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-            </svg>
-            <span>TV Box Compatible</span>
-          </div>
-          <div class="feature-item">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-            </svg>
-            <span>Remote Ready (D-pad)</span>
-          </div>
-          <div class="feature-item">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-            </svg>
-            <span>Direct Installation</span>
+      <!-- Row 0, Col 1: LS TV -->
+      <a href="ls-tv.apk" class="app-card" id="app-lstv" download="ls-tv.apk" tabindex="0">
+        <div class="card-icon-wrap">
+          <img src="icons/lstv.png" alt="LS TV" class="card-icon-img" loading="eager">
+        </div>
+        <div class="card-content">
+          <span class="app-title">LS TV</span>
+          <div class="app-meta">
+            <span>v1.0.0</span>
+            <span>•</span>
+            <span>10 MB</span>
+            <span class="app-tag">Live TV</span>
           </div>
         </div>
+      </a>
 
-        <!-- Simple TV Installation Guide -->
-        <section class="guide">
-          <h3>How to Install TV APKs on Android TV</h3>
-          <ol>
-            <li>Click the download button for your preferred app above.</li>
-            <li>Open the downloaded APK file (e.g., <code>nashidtv.apk</code>, <code>ls-tv.apk</code>, or <code>Sportzfy_v28.apk</code>) from your downloads list or using a File Manager app.</li>
-            <li>
-              If your TV blocks the installation with an <em>"Unknown Sources"</em> warning, 
-              go to your TV's <strong>Settings &gt; Security &amp; Restrictions &gt; Unknown Sources</strong>, 
-              turn on permission for your browser, and click install again.
-            </li>
-          </ol>
-        </section>
-
-        <!-- TV Settings Shortcuts -->
-        <section class="settings-shortcuts">
-          <h3>TV Settings Shortcuts</h3>
-          <p class="shortcut-desc">If you cannot find the "Unknown Sources" setting manually on your TV, click the shortcuts below to open the settings screen directly:</p>
-          <div class="shortcut-grid">
-            <a href="intent://com.android.settings/#Intent;scheme=android-app;end" id="btn-intent-general" class="download-btn shortcut-btn primary-shortcut">
-              <span>Open TV Settings (Verified Working)</span>
-            </a>
-            <div class="fallback-grid">
-              <a href="intent:#Intent;action=android.settings.MANAGE_UNKNOWN_APP_SOURCES;package=com.android.settings;end" id="btn-intent-unknown" class="download-btn shortcut-btn secondary-shortcut">
-                <span>Install Unknown Apps Settings</span>
-              </a>
-              <a href="intent:#Intent;action=android.settings.SECURITY_SETTINGS;package=com.android.settings;end" id="btn-intent-security" class="download-btn shortcut-btn secondary-shortcut">
-                <span>Security Settings</span>
-              </a>
-            </div>
+      <!-- Row 1, Col 0: Sportzfy -->
+      <a href="Sportzfy_v28.apk" class="app-card" id="app-sportzfy" download="Sportzfy_v28.apk" tabindex="0">
+        <div class="card-icon-wrap">
+          <img src="icons/sportzfy.png" alt="Sportzfy" class="card-icon-img" loading="eager">
+        </div>
+        <div class="card-content">
+          <span class="app-title">Sportzfy</span>
+          <div class="app-meta">
+            <span>v28.0 / v30.0</span>
+            <span>•</span>
+            <span>15 MB</span>
+            <span class="app-tag">Sports</span>
           </div>
-        </section>
-      </div>
+        </div>
+      </a>
+
+      <!-- Row 1, Col 1: iMPlayer Official -->
+      <a href="implayer_411_official.apk" class="app-card" id="app-implayer" download="implayer_411_official.apk" tabindex="0">
+        <div class="card-icon-wrap">
+          <img src="icons/implayer.png" alt="iMPlayer" class="card-icon-img" loading="eager">
+        </div>
+        <div class="card-content">
+          <span class="app-title">iMPlayer</span>
+          <div class="app-meta">
+            <span>v4.1.1 Official</span>
+            <span>•</span>
+            <span>98 MB</span>
+            <span class="app-tag">IPTV</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Row 2, Col 0: StreamVault IPTV -->
+      <a href="streamvault.apk" class="app-card" id="app-streamvault" download="streamvault.apk" tabindex="0">
+        <div class="card-icon-wrap">
+          <img src="icons/streamvault.png" alt="StreamVault" class="card-icon-img" loading="eager">
+        </div>
+        <div class="card-content">
+          <span class="app-title">StreamVault</span>
+          <div class="app-meta">
+            <span>v1.0.16</span>
+            <span>•</span>
+            <span>17.5 MB</span>
+            <span class="app-tag">IPTV Player</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Row 2, Col 1: Fred TV -->
+      <a href="fred-tv.apk" class="app-card" id="app-fredtv" download="fred-tv.apk" tabindex="0">
+        <div class="card-icon-wrap">
+          <img src="icons/fredtv.png" alt="Fred TV" class="card-icon-img" loading="eager">
+        </div>
+        <div class="card-content">
+          <span class="app-title">Fred TV</span>
+          <div class="app-meta">
+            <span>v2.0.2</span>
+            <span>•</span>
+            <span>92 MB</span>
+            <span class="app-tag">StreamTV</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Row 3, Col 0: IPTV Smarters Pro -->
+      <a href="https://www.iptvsmarters.com/iptv-smarters-5.0.apk" class="app-card" id="app-smarters" target="_blank" rel="noopener" tabindex="0">
+        <div class="card-icon-wrap">
+          <img src="icons/smarters.png" alt="IPTV Smarters Pro" class="card-icon-img" loading="eager">
+        </div>
+        <div class="card-content">
+          <span class="app-title">IPTV Smarters Pro</span>
+          <div class="app-meta">
+            <span>v5.0 Official</span>
+            <span>•</span>
+            <span>80 MB</span>
+            <span class="app-tag">Smarters Pro</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Row 3, Col 1: XCIPTV Player -->
+      <a href="https://play.google.com/store/apps/details?id=com.nathnetwork.xciptv" class="app-card" id="app-xciptv" target="_blank" rel="noopener" tabindex="0">
+        <div class="card-icon-wrap">
+          <img src="icons/xciptv.png" alt="XCIPTV Player" class="card-icon-img" loading="eager">
+        </div>
+        <div class="card-content">
+          <span class="app-title">XCIPTV Player</span>
+          <div class="app-meta">
+            <span>Latest Official</span>
+            <span>•</span>
+            <span>Play Store</span>
+            <span class="app-tag">XCIPTV</span>
+          </div>
+        </div>
+      </a>
 
     </main>
 
-    <footer>
-      <p>&copy; 2026 Nashid TV. All Rights Reserved. Official Home of NashidTV App.</p>
+    <!-- Compact Utility Bar: Accelerator Selector + TV Settings -->
+    <div class="utility-bar" id="utility-bar">
+      <div class="accelerator-group">
+        <span class="utility-label">
+          <svg style="width:13px;height:13px;fill:#38bdf8;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M7 2v11h3v9l7-12h-4l4-8z"/>
+          </svg>
+          Speed Mirror:
+        </span>
+        <div class="mirror-pills" role="group" aria-label="Speed Mirror Selector">
+          <button type="button" class="pill-btn active" data-mirror="ghfast" id="pill-ghfast" tabindex="0">⚡ ghfast.top</button>
+          <button type="button" class="pill-btn" data-mirror="ghproxy" id="pill-ghproxy" tabindex="0">🚀 gh-proxy.com</button>
+          <button type="button" class="pill-btn" data-mirror="ghproxy_org" id="pill-ghproxy-org" tabindex="0">🚀 gh-proxy.org</button>
+          <button type="button" class="pill-btn" data-mirror="ghddlc" id="pill-ghddlc" tabindex="0">🚀 gh.ddlc.top</button>
+          <button type="button" class="pill-btn" data-mirror="direct" id="pill-direct" tabindex="0">🌐 Direct</button>
+        </div>
+      </div>
+
+      <a href="intent://com.android.settings/#Intent;scheme=android-app;end" class="settings-btn" id="btn-settings" title="Open TV Settings" tabindex="0">
+        <svg style="width:14px;height:14px;fill:currentColor;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+        </svg>
+        <span>TV Settings</span>
+      </a>
+    </div>
+
+    <!-- Trust Footer -->
+    <footer class="trust-footer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
+      </svg>
+      <span>Safe to install • No ads • Privacy friendly • Official Releases</span>
     </footer>
+
   </div>
 
-  <!-- TV Remote Control D-pad support & Download Accelerator Engine -->
+  <!-- Smart Input & Device Detection Toast Badge -->
+  <div id="input-badge" class="input-mode-badge hidden">
+    <div class="status-dot"></div>
+    <span id="input-badge-text">D-Pad Navigation Ready</span>
+  </div>
+
+  <!-- Rock-Solid Deterministic 2D Zonal Grid Engine & Input Detection -->
   <script>
     const RAW_GITHUB_BASE = 'https://raw.githubusercontent.com/nashidazaz/tv/main/';
 
     const MIRRORS = {
-      ghfast: {
-        name: 'ghfast.top',
-        badge: '⚡ ghfast (Fast CDN)',
-        prefix: 'https://ghfast.top/' + RAW_GITHUB_BASE
-      },
-      ghproxy: {
-        name: 'gh-proxy.com',
-        badge: '🚀 gh-proxy.com',
-        prefix: 'https://gh-proxy.com/' + RAW_GITHUB_BASE
-      },
-      ghproxy_org: {
-        name: 'gh-proxy.org',
-        badge: '🚀 gh-proxy.org',
-        prefix: 'https://gh-proxy.org/' + RAW_GITHUB_BASE
-      },
-      ghddlc: {
-        name: 'gh.ddlc.top',
-        badge: '🚀 gh.ddlc.top',
-        prefix: 'https://gh.ddlc.top/' + RAW_GITHUB_BASE
-      },
-      direct: {
-        name: 'Direct (GitHub)',
-        badge: '🌐 Direct (Standard)',
-        prefix: ''
-      }
+      ghfast: { name: 'ghfast.top', prefix: 'https://ghfast.top/' + RAW_GITHUB_BASE },
+      ghproxy: { name: 'gh-proxy.com', prefix: 'https://gh-proxy.com/' + RAW_GITHUB_BASE },
+      ghproxy_org: { name: 'gh-proxy.org', prefix: 'https://gh-proxy.org/' + RAW_GITHUB_BASE },
+      ghddlc: { name: 'gh.ddlc.top', prefix: 'https://gh.ddlc.top/' + RAW_GITHUB_BASE },
+      direct: { name: 'Direct', prefix: '' }
     };
 
     const APK_FILES = {
       nashid: 'nashidtv.apk',
       lstv: 'ls-tv.apk',
-      sportzfy: 'Sportzfy_v28.apk'
+      sportzfy: 'Sportzfy_v28.apk',
+      implayer: 'implayer_411_official.apk',
+      streamvault: 'streamvault.apk',
+      fredtv: 'fred-tv.apk'
     };
 
     function updateDownloadLinks(mirrorKey) {
       if (!MIRRORS[mirrorKey]) mirrorKey = 'ghfast';
-
-      try {
-        localStorage.setItem('nashid_download_mirror', mirrorKey);
-      } catch (e) {}
+      try { localStorage.setItem('nashid_download_mirror', mirrorKey); } catch (e) {}
 
       const mirror = MIRRORS[mirrorKey];
       const isDirect = mirrorKey === 'direct';
 
-      const btnNashid = document.getElementById('download-btn-nashid');
-      const btnLstv = document.getElementById('download-btn-lstv');
-      const btnSportzfy = document.getElementById('download-btn-sportzfy');
+      const localLinks = {
+        'app-nashid': APK_FILES.nashid,
+        'app-lstv': APK_FILES.lstv,
+        'app-sportzfy': APK_FILES.sportzfy,
+        'app-implayer': APK_FILES.implayer,
+        'app-streamvault': APK_FILES.streamvault,
+        'app-fredtv': APK_FILES.fredtv
+      };
 
-      if (btnNashid) btnNashid.href = isDirect ? APK_FILES.nashid : mirror.prefix + APK_FILES.nashid;
-      if (btnLstv) btnLstv.href = isDirect ? APK_FILES.lstv : mirror.prefix + APK_FILES.lstv;
-      if (btnSportzfy) btnSportzfy.href = isDirect ? APK_FILES.sportzfy : mirror.prefix + APK_FILES.sportzfy;
+      for (const [id, file] of Object.entries(localLinks)) {
+        const el = document.getElementById(id);
+        if (el) el.href = isDirect ? file : mirror.prefix + file;
+      }
 
-      // Update mirror button states
-      document.querySelectorAll('.mirror-btn').forEach(btn => {
+      document.querySelectorAll('.pill-btn').forEach(btn => {
         const active = btn.getAttribute('data-mirror') === mirrorKey;
         btn.classList.toggle('active', active);
-        btn.setAttribute('aria-pressed', active ? 'true' : 'false');
       });
+    }
 
-      // Update badge
-      const statusBadge = document.getElementById('mirror-status-badge');
-      if (statusBadge) {
-        statusBadge.textContent = mirror.badge;
-        statusBadge.className = isDirect ? 'mirror-badge direct' : 'mirror-badge accelerated';
+    // ----------------------------------------------------
+    // DETERMINISTIC 2D ZONAL NAVIGATION SYSTEM (4 Rows x 2 Cols)
+    // ----------------------------------------------------
+    const APP_GRID = [
+      ['app-nashid', 'app-lstv'],
+      ['app-sportzfy', 'app-implayer'],
+      ['app-streamvault', 'app-fredtv'],
+      ['app-smarters', 'app-xciptv']
+    ];
+
+    const UTILITY_ROW = [
+      'pill-ghfast',
+      'pill-ghproxy',
+      'pill-ghproxy-org',
+      'pill-ghddlc',
+      'pill-direct',
+      'btn-settings'
+    ];
+
+    let currentZone = 'grid'; // 'grid' | 'utility'
+    let gridRow = 0;
+    let gridCol = 0;
+    let utilityIndex = 0;
+
+    function applyFocus(elementId) {
+      const el = document.getElementById(elementId);
+      if (el) {
+        el.focus();
+        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
     }
 
+    function syncStateFromDOM() {
+      const active = document.activeElement;
+      if (!active) return;
+      const activeId = active.id;
+
+      for (let r = 0; r < APP_GRID.length; r++) {
+        for (let c = 0; c < APP_GRID[r].length; c++) {
+          if (APP_GRID[r][c] === activeId) {
+            currentZone = 'grid';
+            gridRow = r;
+            gridCol = c;
+            return;
+          }
+        }
+      }
+
+      const uIdx = UTILITY_ROW.indexOf(activeId);
+      if (uIdx !== -1) {
+        currentZone = 'utility';
+        utilityIndex = uIdx;
+      }
+    }
+
+    function navigateGrid(direction) {
+      syncStateFromDOM();
+
+      if (currentZone === 'grid') {
+        if (direction === 'right') {
+          if (gridCol < 1) {
+            gridCol = 1;
+            applyFocus(APP_GRID[gridRow][gridCol]);
+          }
+        } else if (direction === 'left') {
+          if (gridCol > 0) {
+            gridCol = 0;
+            applyFocus(APP_GRID[gridRow][gridCol]);
+          }
+        } else if (direction === 'down') {
+          if (gridRow < APP_GRID.length - 1) {
+            gridRow++;
+            applyFocus(APP_GRID[gridRow][gridCol]);
+          } else {
+            // Move down from bottom row into utility bar
+            currentZone = 'utility';
+            utilityIndex = (gridCol === 0) ? 0 : UTILITY_ROW.length - 1;
+            applyFocus(UTILITY_ROW[utilityIndex]);
+          }
+        } else if (direction === 'up') {
+          if (gridRow > 0) {
+            gridRow--;
+            applyFocus(APP_GRID[gridRow][gridCol]);
+          }
+        }
+      } else if (currentZone === 'utility') {
+        if (direction === 'right') {
+          if (utilityIndex < UTILITY_ROW.length - 1) {
+            utilityIndex++;
+            applyFocus(UTILITY_ROW[utilityIndex]);
+          }
+        } else if (direction === 'left') {
+          if (utilityIndex > 0) {
+            utilityIndex--;
+            applyFocus(UTILITY_ROW[utilityIndex]);
+          }
+        } else if (direction === 'up') {
+          // Return to App Grid bottom row
+          currentZone = 'grid';
+          gridRow = APP_GRID.length - 1; // row 3
+          gridCol = (utilityIndex <= 2) ? 0 : 1;
+          applyFocus(APP_GRID[gridRow][gridCol]);
+        }
+      }
+    }
+
+    // ----------------------------------------------------
+    // SMART INPUT & DEVICE DETECTION ENGINE
+    // ----------------------------------------------------
+    let badgeTimeout = null;
+    function showInputBadge(text) {
+      const badge = document.getElementById('input-badge');
+      const badgeText = document.getElementById('input-badge-text');
+      if (!badge || !badgeText) return;
+
+      badgeText.textContent = text;
+      badge.classList.remove('hidden');
+
+      clearTimeout(badgeTimeout);
+      badgeTimeout = setTimeout(() => {
+        badge.classList.add('hidden');
+      }, 3500);
+    }
+
+    const ua = navigator.userAgent;
+    const isTV = /Android.*TV|SmartTV|GoogleTV|AFT|AppleTV|HbbTV|CrKey/i.test(ua) || (window.innerWidth >= 960 && /Android/i.test(ua));
+
+    // Keyboard Arrow Handling
+    window.addEventListener('keydown', (e) => {
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        e.preventDefault();
+        const dirMap = {
+          'ArrowUp': 'up',
+          'ArrowDown': 'down',
+          'ArrowLeft': 'left',
+          'ArrowRight': 'right'
+        };
+        navigateGrid(dirMap[e.key]);
+
+        if (isTV) {
+          showInputBadge('📺 TV Remote D-Pad Active');
+        } else {
+          showInputBadge('⌨️ Keyboard D-Pad Active');
+        }
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        if (document.activeElement) {
+          document.activeElement.click();
+        }
+      }
+    });
+
+    // Mouse Activity Detection
+    let mouseActive = false;
+    window.addEventListener('mousemove', () => {
+      if (!mouseActive) {
+        mouseActive = true;
+        showInputBadge('🖱️ Mouse Controller Active');
+        setTimeout(() => { mouseActive = false; }, 5000);
+      }
+    }, { passive: true });
+
+    // Touch Activity Detection
+    window.addEventListener('touchstart', () => {
+      showInputBadge('📱 Touch Mode Active');
+    }, { passive: true });
+
+    // ----------------------------------------------------
+    // XBOX & GAMEPAD API ENGINE
+    // ----------------------------------------------------
+    let lastGamepadNavTime = 0;
+    const GAMEPAD_DEBOUNCE = 200; // ms
+
+    function pollGamepad() {
+      const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+      let activeGamepad = null;
+
+      for (let i = 0; i < gamepads.length; i++) {
+        if (gamepads[i]) {
+          activeGamepad = gamepads[i];
+          break;
+        }
+      }
+
+      if (activeGamepad) {
+        const now = Date.now();
+        const b = activeGamepad.buttons;
+        const a = activeGamepad.axes;
+
+        // D-Pad or Left Stick
+        const dUp = (b[12] && b[12].pressed) || a[1] < -0.5;
+        const dDown = (b[13] && b[13].pressed) || a[1] > 0.5;
+        const dLeft = (b[14] && b[14].pressed) || a[0] < -0.5;
+        const dRight = (b[15] && b[15].pressed) || a[0] > 0.5;
+
+        if (now - lastGamepadNavTime > GAMEPAD_DEBOUNCE) {
+          if (dUp) {
+            navigateGrid('up');
+            lastGamepadNavTime = now;
+            showInputBadge('🎮 Xbox D-Pad Up');
+          } else if (dDown) {
+            navigateGrid('down');
+            lastGamepadNavTime = now;
+            showInputBadge('🎮 Xbox D-Pad Down');
+          } else if (dLeft) {
+            navigateGrid('left');
+            lastGamepadNavTime = now;
+            showInputBadge('🎮 Xbox D-Pad Left');
+          } else if (dRight) {
+            navigateGrid('right');
+            lastGamepadNavTime = now;
+            showInputBadge('🎮 Xbox D-Pad Right');
+          }
+        }
+
+        // 'A' Button (Button 0) = Trigger Click
+        if (b[0] && b[0].pressed) {
+          if (now - lastGamepadNavTime > 250) {
+            if (document.activeElement) {
+              document.activeElement.click();
+              lastGamepadNavTime = now;
+              showInputBadge('🎮 [A] Button Pressed');
+            }
+          }
+        }
+      }
+
+      requestAnimationFrame(pollGamepad);
+    }
+
+    // Initialize
     window.addEventListener('DOMContentLoaded', () => {
       let savedMirror = 'ghfast';
       try {
         savedMirror = localStorage.getItem('nashid_download_mirror') || 'ghfast';
       } catch (e) {}
-
       updateDownloadLinks(savedMirror);
 
-      // Bind mirror buttons
-      document.querySelectorAll('.mirror-btn').forEach(btn => {
+      document.querySelectorAll('.pill-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.preventDefault();
-          const mirrorKey = btn.getAttribute('data-mirror');
-          updateDownloadLinks(mirrorKey);
+          updateDownloadLinks(btn.getAttribute('data-mirror'));
         });
       });
 
-      // Force focus on main download button on load for TV D-pad
-      const downloadBtn = document.getElementById('download-btn-nashid');
-      if (downloadBtn) {
-        downloadBtn.focus();
+      // Initial focus on top-left app (Nashid TV)
+      applyFocus('app-nashid');
+
+      // Initial Input Mode Greeting
+      if (isTV) {
+        showInputBadge('📺 Android TV Remote Ready');
+      } else {
+        showInputBadge('🎮 Remote / Controller Ready');
       }
+
+      // Start Gamepad API Loop
+      requestAnimationFrame(pollGamepad);
+    });
+
+    window.addEventListener('gamepadconnected', (e) => {
+      const name = e.gamepad.id.includes('Xbox') ? '🎮 Xbox Controller Connected' : '🎮 Gamepad Connected';
+      showInputBadge(name);
     });
   </script>
 </body>
