@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Nashid TV - Google TV Minimalist Demo</title>
+  <title>Nashid TV - Official TV Application Portal</title>
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,7 +43,7 @@
       align-items: center;
       overflow-x: hidden;
       position: relative;
-      padding: 24px 20px;
+      padding: 30px 20px;
     }
 
     /* Ambient Google TV Background Glow */
@@ -54,19 +54,19 @@
       left: -20%;
       width: 140%;
       height: 140%;
-      background: radial-gradient(circle at 50% 25%, rgba(56, 189, 248, 0.12) 0%, transparent 55%),
+      background: radial-gradient(circle at 50% 20%, rgba(56, 189, 248, 0.12) 0%, transparent 55%),
                   radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.08) 0%, transparent 50%);
       z-index: -1;
       pointer-events: none;
     }
 
     .container {
-      max-width: 980px;
+      max-width: 960px;
       width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 28px;
+      gap: 24px;
       z-index: 1;
     }
 
@@ -76,51 +76,49 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .tv-logo-badge {
-      width: 68px;
-      height: 68px;
+      width: 64px;
+      height: 64px;
       background: rgba(56, 189, 248, 0.08);
       border: 1px solid rgba(56, 189, 248, 0.25);
-      border-radius: 20px;
+      border-radius: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 0 25px rgba(56, 189, 248, 0.25);
-      transition: transform 0.3s ease;
     }
 
     .tv-logo-badge svg {
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       fill: #38bdf8;
     }
 
     h1 {
-      font-size: 2.5rem;
+      font-size: 2.35rem;
       font-weight: 800;
       letter-spacing: -0.02em;
       color: #ffffff;
-      margin-top: 4px;
     }
 
     .subtitle {
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: var(--text-muted);
-      max-width: 540px;
-      line-height: 1.5;
+      max-width: 520px;
+      line-height: 1.45;
       font-weight: 300;
     }
 
-    /* Grid layout for Apps (Google TV 2x2 Cards) */
+    /* Grid layout for Apps (Google TV 2-Column Responsive Grid) */
     .apps-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 18px;
+      gap: 14px;
       width: 100%;
-      max-width: 860px;
+      max-width: 880px;
     }
 
     /* Google TV Signature Download Card */
@@ -128,80 +126,80 @@
       position: relative;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 22px;
-      padding: 20px 24px;
+      border-radius: 18px;
+      padding: 16px 20px;
       display: flex;
       align-items: center;
-      gap: 18px;
+      gap: 16px;
       text-decoration: none;
       color: var(--text-main);
       outline: none;
       cursor: pointer;
       user-select: none;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
     }
 
     .card-icon-wrap {
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
       background: rgba(255, 255, 255, 0.06);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      transition: all 0.25s ease;
+      transition: all 0.24s ease;
     }
 
     .card-icon-wrap svg {
-      width: 26px;
-      height: 26px;
+      width: 24px;
+      height: 24px;
       fill: #94a3b8;
-      transition: fill 0.25s ease;
+      transition: fill 0.24s ease;
     }
 
     .card-content {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 4px;
+      gap: 3px;
       flex: 1;
       min-width: 0;
     }
 
     .app-title {
-      font-size: 1.25rem;
+      font-size: 1.15rem;
       font-weight: 700;
       letter-spacing: -0.01em;
       color: var(--text-main);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      transition: color 0.25s ease;
+      transition: color 0.24s ease;
     }
 
     .app-meta {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 400;
       color: var(--text-muted);
       display: flex;
       align-items: center;
       gap: 6px;
-      transition: color 0.25s ease;
+      transition: color 0.24s ease;
     }
 
     .app-tag {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 600;
-      padding: 2px 7px;
-      border-radius: 6px;
+      padding: 2px 6px;
+      border-radius: 5px;
       background: rgba(255, 255, 255, 0.08);
       color: #cbd5e1;
       text-transform: uppercase;
       letter-spacing: 0.03em;
-      transition: all 0.25s ease;
+      transition: all 0.24s ease;
     }
 
     /* ----------------------------------------------------
@@ -212,7 +210,7 @@
       background: var(--focus-bg) !important;
       color: var(--focus-text) !important;
       border-color: #ffffff !important;
-      transform: translateY(-5px) scale(1.035);
+      transform: translateY(-4px) scale(1.03);
       box-shadow: var(--focus-shadow);
       z-index: 10;
     }
@@ -255,7 +253,7 @@
       justify-content: space-between;
       gap: 12px;
       width: 100%;
-      max-width: 860px;
+      max-width: 880px;
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid rgba(255, 255, 255, 0.05);
       border-radius: 16px;
@@ -430,10 +428,10 @@
       <p class="subtitle">Optimized for Android TV. Fast, lightweight, and perfect for D-pad remote control.</p>
     </header>
 
-    <!-- Google TV Signature App Grid (2x2 Grid) -->
+    <!-- Google TV Signature App Grid (4 Rows x 2 Cols) -->
     <main class="apps-grid" id="apps-grid" role="region" aria-label="TV Applications Download">
       
-      <!-- Card [0,0]: Nashid TV (Top Left) -->
+      <!-- Row 0, Col 0: Nashid TV -->
       <a href="nashidtv.apk" class="app-card" id="app-nashid" download="nashidtv.apk" tabindex="0" autofocus>
         <div class="card-icon-wrap">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -443,7 +441,7 @@
         <div class="card-content">
           <span class="app-title">Download Nashid TV</span>
           <div class="app-meta">
-            <span>Version 1.1.04</span>
+            <span>v1.1.04</span>
             <span>•</span>
             <span>51 MB</span>
             <span class="app-tag">Main App</span>
@@ -451,7 +449,7 @@
         </div>
       </a>
 
-      <!-- Card [0,1]: LS TV (Top Right) -->
+      <!-- Row 0, Col 1: LS TV -->
       <a href="ls-tv.apk" class="app-card" id="app-lstv" download="ls-tv.apk" tabindex="0">
         <div class="card-icon-wrap">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -461,15 +459,15 @@
         <div class="card-content">
           <span class="app-title">Download LS TV</span>
           <div class="app-meta">
-            <span>Version 1.0.0</span>
+            <span>v1.0.0</span>
             <span>•</span>
-            <span>12 MB</span>
+            <span>10 MB</span>
             <span class="app-tag">Live TV</span>
           </div>
         </div>
       </a>
 
-      <!-- Card [1,0]: Sportzfy (Bottom Left) -->
+      <!-- Row 1, Col 0: Sportzfy -->
       <a href="Sportzfy_v28.apk" class="app-card" id="app-sportzfy" download="Sportzfy_v28.apk" tabindex="0">
         <div class="card-icon-wrap">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -479,7 +477,7 @@
         <div class="card-content">
           <span class="app-title">Download Sportzfy</span>
           <div class="app-meta">
-            <span>Version 28</span>
+            <span>v28.0 / v30.0</span>
             <span>•</span>
             <span>15 MB</span>
             <span class="app-tag">Sports</span>
@@ -487,20 +485,92 @@
         </div>
       </a>
 
-      <!-- Card [1,1]: Quick Player (Bottom Right) -->
-      <a href="QuickPlayer-1104.apk" class="app-card" id="app-quickplayer" download="QuickPlayer-1104.apk" tabindex="0">
+      <!-- Row 1, Col 1: iMPlayer Official -->
+      <a href="implayer_411_official.apk" class="app-card" id="app-implayer" download="implayer_411_official.apk" tabindex="0">
         <div class="card-icon-wrap">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
           </svg>
         </div>
         <div class="card-content">
-          <span class="app-title">Download QuickPlayer</span>
+          <span class="app-title">Download iMPlayer</span>
           <div class="app-meta">
-            <span>Version 1.1.04</span>
+            <span>v4.1.1 Official</span>
             <span>•</span>
-            <span>53 MB</span>
-            <span class="app-tag">Player</span>
+            <span>98 MB</span>
+            <span class="app-tag">IPTV</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Row 2, Col 0: StreamVault IPTV -->
+      <a href="streamvault.apk" class="app-card" id="app-streamvault" download="streamvault.apk" tabindex="0">
+        <div class="card-icon-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+          </svg>
+        </div>
+        <div class="card-content">
+          <span class="app-title">Download StreamVault</span>
+          <div class="app-meta">
+            <span>v1.0.16</span>
+            <span>•</span>
+            <span>17.5 MB</span>
+            <span class="app-tag">IPTV Player</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Row 2, Col 1: Fred TV -->
+      <a href="fred-tv.apk" class="app-card" id="app-fredtv" download="fred-tv.apk" tabindex="0">
+        <div class="card-icon-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+          </svg>
+        </div>
+        <div class="card-content">
+          <span class="app-title">Download Fred TV</span>
+          <div class="app-meta">
+            <span>v2.0.2</span>
+            <span>•</span>
+            <span>92 MB</span>
+            <span class="app-tag">StreamTV</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Row 3, Col 0: IPTV Smarters Pro -->
+      <a href="https://www.iptvsmarters.com/iptv-smarters-5.0.apk" class="app-card" id="app-smarters" target="_blank" rel="noopener" tabindex="0">
+        <div class="card-icon-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+          </svg>
+        </div>
+        <div class="card-content">
+          <span class="app-title">Download IPTV Smarters</span>
+          <div class="app-meta">
+            <span>v5.0 Official</span>
+            <span>•</span>
+            <span>80 MB</span>
+            <span class="app-tag">Smarters Pro</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Row 3, Col 1: XCIPTV Player -->
+      <a href="https://play.google.com/store/apps/details?id=com.nathnetwork.xciptv" class="app-card" id="app-xciptv" target="_blank" rel="noopener" tabindex="0">
+        <div class="card-icon-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+          </svg>
+        </div>
+        <div class="card-content">
+          <span class="app-title">XCIPTV Player</span>
+          <div class="app-meta">
+            <span>Latest Official</span>
+            <span>•</span>
+            <span>Play Store</span>
+            <span class="app-tag">XCIPTV</span>
           </div>
         </div>
       </a>
@@ -538,7 +608,7 @@
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
       </svg>
-      <span>Safe to install • No ads • Privacy friendly • Official Release</span>
+      <span>Safe to install • No ads • Privacy friendly • Official Releases</span>
     </footer>
 
   </div>
@@ -565,7 +635,9 @@
       nashid: 'nashidtv.apk',
       lstv: 'ls-tv.apk',
       sportzfy: 'Sportzfy_v28.apk',
-      quickplayer: 'QuickPlayer-1104.apk'
+      implayer: 'implayer_411_official.apk',
+      streamvault: 'streamvault.apk',
+      fredtv: 'fred-tv.apk'
     };
 
     function updateDownloadLinks(mirrorKey) {
@@ -575,14 +647,16 @@
       const mirror = MIRRORS[mirrorKey];
       const isDirect = mirrorKey === 'direct';
 
-      const links = {
+      const localLinks = {
         'app-nashid': APK_FILES.nashid,
         'app-lstv': APK_FILES.lstv,
         'app-sportzfy': APK_FILES.sportzfy,
-        'app-quickplayer': APK_FILES.quickplayer
+        'app-implayer': APK_FILES.implayer,
+        'app-streamvault': APK_FILES.streamvault,
+        'app-fredtv': APK_FILES.fredtv
       };
 
-      for (const [id, file] of Object.entries(links)) {
+      for (const [id, file] of Object.entries(localLinks)) {
         const el = document.getElementById(id);
         if (el) el.href = isDirect ? file : mirror.prefix + file;
       }
@@ -594,17 +668,15 @@
     }
 
     // ----------------------------------------------------
-    // DETERMINISTIC 2D ZONAL NAVIGATION SYSTEM
+    // DETERMINISTIC 2D ZONAL NAVIGATION SYSTEM (4 Rows x 2 Cols)
     // ----------------------------------------------------
-    // Zone 1: App Grid (2x2)
-    // [0,0]: Nashid TV   | [0,1]: LS TV
-    // [1,0]: Sportzfy    | [1,1]: Quick Player
     const APP_GRID = [
       ['app-nashid', 'app-lstv'],
-      ['app-sportzfy', 'app-quickplayer']
+      ['app-sportzfy', 'app-implayer'],
+      ['app-streamvault', 'app-fredtv'],
+      ['app-smarters', 'app-xciptv']
     ];
 
-    // Zone 2: Utility Bar (Horizontal Array)
     const UTILITY_ROW = [
       'pill-ghfast',
       'pill-ghproxy',
@@ -632,7 +704,6 @@
       if (!active) return;
       const activeId = active.id;
 
-      // Check Grid
       for (let r = 0; r < APP_GRID.length; r++) {
         for (let c = 0; c < APP_GRID[r].length; c++) {
           if (APP_GRID[r][c] === activeId) {
@@ -644,7 +715,6 @@
         }
       }
 
-      // Check Utility
       const uIdx = UTILITY_ROW.indexOf(activeId);
       if (uIdx !== -1) {
         currentZone = 'utility';
@@ -667,8 +737,8 @@
             applyFocus(APP_GRID[gridRow][gridCol]);
           }
         } else if (direction === 'down') {
-          if (gridRow === 0) {
-            gridRow = 1;
+          if (gridRow < APP_GRID.length - 1) {
+            gridRow++;
             applyFocus(APP_GRID[gridRow][gridCol]);
           } else {
             // Move down from bottom row into utility bar
@@ -677,8 +747,8 @@
             applyFocus(UTILITY_ROW[utilityIndex]);
           }
         } else if (direction === 'up') {
-          if (gridRow === 1) {
-            gridRow = 0;
+          if (gridRow > 0) {
+            gridRow--;
             applyFocus(APP_GRID[gridRow][gridCol]);
           }
         }
@@ -694,10 +764,10 @@
             applyFocus(UTILITY_ROW[utilityIndex]);
           }
         } else if (direction === 'up') {
-          // Return to App Grid
+          // Return to App Grid bottom row
           currentZone = 'grid';
-          gridRow = 1; // bottom row
-          gridCol = (utilityIndex <= 2) ? 0 : 1; // Left or Right card
+          gridRow = APP_GRID.length - 1; // row 3
+          gridCol = (utilityIndex <= 2) ? 0 : 1;
           applyFocus(APP_GRID[gridRow][gridCol]);
         }
       }
@@ -721,7 +791,6 @@
       }, 3500);
     }
 
-    // Platform Check
     const ua = navigator.userAgent;
     const isTV = /Android.*TV|SmartTV|GoogleTV|AFT|AppleTV|HbbTV|CrKey/i.test(ua) || (window.innerWidth >= 960 && /Android/i.test(ua));
 
