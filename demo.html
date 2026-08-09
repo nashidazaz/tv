@@ -894,7 +894,7 @@
     }
 
     // ----------------------------------------------------
-    // HIGH-PRECISION RANGE THROUGHPUT SPEED BENCHMARK ENGINE
+    // HIGH-PRECISION SEQUENTIAL THROUGHPUT & LATENCY BENCHMARK ENGINE
     // ----------------------------------------------------
     let activeMirror = 'ghfast';
     let manualOverride = false;
@@ -917,81 +917,72 @@
       }
     }
 
-    function updatePillStatus(key, speedMbps) {
+    function updatePillStatus(key, speedMbps, pingMs) {
       const btn = document.querySelector(`[data-mirror="${key}"]`);
       if (!btn) return;
       const label = PILL_DEFAULT_LABELS[key] || key;
       if (speedMbps > 0) {
-        btn.textContent = `${label} (${formatSpeed(speedMbps)})`;
+        btn.textContent = `${label} (${formatSpeed(speedMbps)} • ${pingMs}ms)`;
       }
-    }
-
-    async function measureProxyThroughput(url, signal) {
-      const t0 = performance.now();
-      const res = await fetch(url, {
-        headers: { 'Range': 'bytes=0-1572863' }, // 1.5 MB chunk slice for true TCP ramp-up
-        signal: signal,
-        cache: 'no-store'
-      });
-      if (!res.ok && res.status !== 206) throw new Error('HTTP ' + res.status);
-
-      const reader = res.body.getReader();
-      let receivedBytes = 0;
-      let firstByteTime = null;
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        if (firstByteTime === null) firstByteTime = performance.now();
-        receivedBytes += value.byteLength;
-      }
-
-      const durationSec = Math.max((performance.now() - (firstByteTime || t0)) / 1000, 0.05);
-      const sizeMB = receivedBytes / (1024 * 1024);
-      const mbps = (sizeMB * 8) / durationSec; // MegaBits per second (ISP Standard)
-
-      return { mbps, bytes: receivedBytes };
     }
 
     async function runBackgroundSpeedBenchmark() {
-      const TEST_ASSET = 'ls-tv.apk?speedtest=' + Date.now();
+      // Use PNG image asset to prevent browser extensions from intercepting as APK download
+      const TEST_ASSET = 'icons/sportzfy.png?speedtest=' + Date.now();
       
-      // ONLY PROXY MIRRORS ARE ELIGIBLE FOR AUTO-SELECTION (Direct is excluded per user preference!)
+      // ONLY PROXY MIRRORS ARE TESTED (Direct is excluded from auto-selection)
       const proxyKeysToTest = ['ghfast', 'ghproxy', 'ghproxy_org', 'ghproxy_net', 'cf_ghproxy'];
       const results = {};
 
-      const testPromises = proxyKeysToTest.map(async (key) => {
+      // SEQUENTIAL EXECUTION: Tests each proxy one-by-one so full 100% bandwidth is measured without split
+      for (const key of proxyKeysToTest) {
+        if (manualOverride || testAbortController.signal.aborted) break;
+
         const mirror = MIRRORS[key];
         const url = mirror.prefix + TEST_ASSET;
+        const t0 = performance.now();
 
         try {
-          const { mbps } = await measureProxyThroughput(url, testAbortController.signal);
-          results[key] = { mbps, success: true };
-          updatePillStatus(key, mbps);
+          const res = await fetch(url, {
+            signal: testAbortController.signal,
+            cache: 'no-store'
+          });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+
+          const blob = await res.blob();
+          const durationSec = Math.max((performance.now() - t0) / 1000, 0.03);
+          const pingMs = Math.round(durationSec * 1000);
+          const sizeMB = blob.size / (1024 * 1024);
+          const mbps = (sizeMB * 8) / durationSec;
+
+          // Composite Performance Score: Throughput weighted by low latency
+          const latencySec = Math.max(durationSec, 0.05);
+          const compositeScore = mbps / Math.sqrt(latencySec);
+
+          results[key] = { mbps, pingMs, compositeScore, success: true };
+          updatePillStatus(key, mbps, pingMs);
         } catch (e) {
           if (e.name !== 'AbortError') {
-            results[key] = { mbps: 0, success: false };
+            results[key] = { mbps: 0, pingMs: 9999, compositeScore: 0, success: false };
           }
         }
-      });
+      }
 
-      await Promise.allSettled(testPromises);
-
-      // Auto-select fastest PROXY winner (Direct is excluded!)
+      // Auto-select winner with highest Composite Quality Score (Best Speed + Lowest Latency)
       if (!manualOverride && !testAbortController.signal.aborted) {
         let bestKey = 'ghfast';
-        let maxSpeed = -1;
+        let maxScore = -1;
 
         for (const [k, data] of Object.entries(results)) {
-          if (data.success && data.mbps > maxSpeed) {
-            maxSpeed = data.mbps;
+          if (data.success && data.compositeScore > maxScore) {
+            maxScore = data.compositeScore;
             bestKey = k;
           }
         }
 
         if (bestKey && results[bestKey]?.success) {
           updateDownloadLinks(bestKey);
-          showInputBadge(`⚡ Optimal Mirror: ${MIRRORS[bestKey].name} (${formatSpeed(results[bestKey].mbps)})`);
+          showInputBadge(`⚡ Optimal Mirror: ${MIRRORS[bestKey].name} (${formatSpeed(results[bestKey].mbps)} • ${results[bestKey].pingMs}ms)`);
         }
       }
     }
