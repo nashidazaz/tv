@@ -77,9 +77,10 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      overflow-x: hidden;
       position: relative;
-      padding: 30px 20px;
+      padding: clamp(10px, 2vh, 24px) clamp(16px, 3vw, 32px);
+      box-sizing: border-box;
+      overflow-x: hidden;
     }
 
     /* Ambient Google TV Background Glow */
@@ -96,65 +97,70 @@
       pointer-events: none;
     }
 
+    /* Viewport Fit Container (1140px on Widescreen TV) */
     .container {
-      max-width: 960px;
+      max-width: 1140px;
       width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 24px;
+      justify-content: center;
+      gap: clamp(8px, 1.6vh, 16px);
       z-index: 1;
     }
 
-    /* Minimalist Header */
+    /* Minimalist Compact Header */
     .header {
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      gap: 10px;
+      gap: clamp(4px, 1vh, 8px);
     }
 
     .tv-logo-badge {
-      width: 64px;
-      height: 64px;
+      width: clamp(38px, 5vh, 48px);
+      height: clamp(38px, 5vh, 48px);
       background: rgba(56, 189, 248, 0.08);
       border: 1px solid rgba(56, 189, 248, 0.25);
-      border-radius: 18px;
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 25px rgba(56, 189, 248, 0.25);
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
     }
 
     .tv-logo-badge svg {
-      width: 36px;
-      height: 36px;
+      width: clamp(22px, 3vh, 28px);
+      height: clamp(22px, 3vh, 28px);
       fill: #38bdf8;
     }
 
     h1 {
-      font-size: 2.35rem;
+      font-size: clamp(1.4rem, 3.2vh, 2rem);
       font-weight: 800;
       letter-spacing: -0.01em;
       color: #ffffff;
+      line-height: 1.15;
     }
 
     .subtitle {
-      font-size: 1rem;
+      font-size: clamp(0.76rem, 1.5vh, 0.88rem);
       color: var(--text-muted);
-      max-width: 520px;
-      line-height: 1.45;
+      max-width: 580px;
+      line-height: 1.35;
       font-weight: 300;
     }
 
-    /* Grid layout for Apps (Google TV 2-Column Responsive Grid) */
+    /* ----------------------------------------------------
+       RESPONSIVE 4-COLUMN x 2-ROW TV APPS GRID (ZERO SCROLL)
+       ---------------------------------------------------- */
     .apps-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(8px, 1.2vh, 12px);
       width: 100%;
-      max-width: 880px;
+      max-width: 1140px;
     }
 
     /* Google TV Signature App Card */
@@ -162,11 +168,11 @@
       position: relative;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 18px;
-      padding: 16px 20px;
+      border-radius: 14px;
+      padding: clamp(10px, 1.4vh, 14px) clamp(10px, 1.2vw, 14px);
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
       text-decoration: none;
       color: var(--text-main);
       outline: none;
@@ -175,12 +181,13 @@
       transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
+      min-width: 0;
     }
 
     .card-icon-wrap {
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
+      width: clamp(38px, 5vh, 44px);
+      height: clamp(38px, 5vh, 44px);
+      border-radius: 11px;
       background: #141724;
       border: 1px solid rgba(255, 255, 255, 0.08);
       display: flex;
@@ -188,7 +195,7 @@
       justify-content: center;
       flex-shrink: 0;
       overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
       transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
@@ -196,7 +203,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 13px;
+      border-radius: 10px;
       transition: transform 0.24s ease;
     }
 
@@ -204,53 +211,57 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 3px;
+      gap: 2px;
       flex: 1;
       min-width: 0;
+      overflow: hidden;
     }
 
     .app-title {
-      font-size: 1.15rem;
+      font-size: clamp(0.88rem, 1.7vh, 1.02rem);
       font-weight: 700;
       letter-spacing: -0.01em;
       color: var(--text-main);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      max-width: 100%;
       transition: color 0.24s ease;
     }
 
     .app-meta {
-      font-size: 0.82rem;
+      font-size: clamp(0.7rem, 1.3vh, 0.78rem);
       font-weight: 400;
       color: var(--text-muted);
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
       transition: color 0.24s ease;
     }
 
     .app-tag {
-      font-size: 0.7rem;
+      font-size: 0.64rem;
       font-weight: 600;
-      padding: 2px 6px;
-      border-radius: 5px;
+      padding: 1px 5px;
+      border-radius: 4px;
       background: rgba(255, 255, 255, 0.08);
       color: #cbd5e1;
       text-transform: uppercase;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.02em;
       transition: all 0.24s ease;
     }
 
-    /* ----------------------------------------------------
-       THE GOOGLE TV SIGNATURE FOCUS EFFECT (Pure Contrast)
-       ---------------------------------------------------- */
+    /* Focus State */
     .app-card:focus,
     .app-card.focused {
       background: var(--focus-bg) !important;
       color: var(--focus-text) !important;
       border-color: #ffffff !important;
-      transform: translateY(-4px) scale(1.03);
+      transform: translateY(-3px) scale(1.025);
       box-shadow: var(--focus-shadow);
       z-index: 10;
     }
@@ -288,18 +299,18 @@
     }
 
     /* ----------------------------------------------------
-       SYMMETRICAL SPEED MIRROR & SETTINGS UTILITY CARD (880px)
+       COMPACT ZERO-OVERFLOW SPEED ACCELERATOR CARD
        ---------------------------------------------------- */
     .utility-card {
       width: 100%;
-      max-width: 880px;
+      max-width: 1140px;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 18px;
-      padding: 18px 20px;
+      border-radius: 14px;
+      padding: clamp(8px, 1.2vh, 14px) clamp(12px, 1.5vw, 18px);
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: clamp(6px, 1vh, 10px);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       box-sizing: border-box;
@@ -313,20 +324,20 @@
     }
 
     .utility-title {
-      font-size: 0.82rem;
+      font-size: clamp(0.72rem, 1.4vh, 0.8rem);
       font-weight: 700;
       color: #94a3b8;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 6px;
     }
 
     .mirror-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      grid-template-columns: repeat(6, 1fr);
+      gap: clamp(6px, 0.8vw, 8px);
       width: 100%;
     }
 
@@ -334,8 +345,8 @@
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.08);
       color: #cbd5e1;
-      padding: 10px 10px;
-      border-radius: 12px;
+      padding: clamp(6px, 1vh, 8px) 6px;
+      border-radius: 10px;
       font-family: inherit;
       cursor: pointer;
       outline: none;
@@ -345,13 +356,13 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 3px;
+      gap: 2px;
       min-width: 0;
       text-align: center;
     }
 
     .pill-name {
-      font-size: 0.82rem;
+      font-size: clamp(0.72rem, 1.3vh, 0.78rem);
       font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
@@ -361,10 +372,13 @@
     }
 
     .pill-speed {
-      font-size: 0.72rem;
+      font-size: clamp(0.64rem, 1.1vh, 0.7rem);
       color: #64748b;
       font-weight: 500;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
       transition: color 0.2s ease;
     }
 
@@ -379,7 +393,7 @@
       background: #ffffff !important;
       color: #090d16 !important;
       border-color: #ffffff !important;
-      box-shadow: 0 0 25px rgba(255, 255, 255, 0.5), 0 8px 20px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
       transform: translateY(-2px) scale(1.02);
       z-index: 5;
     }
@@ -410,15 +424,15 @@
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.08);
       color: #cbd5e1;
-      padding: 6px 14px;
-      border-radius: 10px;
-      font-size: 0.78rem;
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: clamp(0.72rem, 1.3vh, 0.78rem);
       font-weight: 500;
       cursor: pointer;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       outline: none;
       transition: all 0.2s ease;
       white-space: nowrap;
@@ -437,32 +451,32 @@
     .trust-footer {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       color: #64748b;
-      font-size: 0.82rem;
-      margin-top: 4px;
+      font-size: clamp(0.7rem, 1.3vh, 0.78rem);
+      margin-top: 2px;
     }
 
     .trust-footer svg {
-      width: 14px;
-      height: 14px;
+      width: 12px;
+      height: 12px;
       fill: #10b981;
     }
 
     /* Smart Input & Device Detection Toast Badge */
     .input-mode-badge {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
+      bottom: 16px;
+      right: 16px;
       background: rgba(15, 23, 42, 0.95);
       border: 1px solid rgba(56, 189, 248, 0.35);
-      padding: 8px 14px;
-      border-radius: 12px;
-      font-size: 0.78rem;
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 0.74rem;
       color: #38bdf8;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
       z-index: 100;
       backdrop-filter: blur(10px);
@@ -477,23 +491,34 @@
     }
 
     .status-dot {
-      width: 8px;
-      height: 8px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
       background: #10b981;
-      box-shadow: 0 0 8px #10b981;
+      box-shadow: 0 0 6px #10b981;
     }
 
-    /* Mobile Responsive */
-    @media (max-width: 680px) {
+    /* Medium Tablet & Portrait Layout */
+    @media (max-width: 900px) {
+      .apps-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .mirror-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    /* Mobile Phones (Scrollable) */
+    @media (max-width: 600px) {
+      body {
+        padding: 20px 14px;
+        justify-content: flex-start;
+      }
       .apps-grid {
         grid-template-columns: 1fr;
       }
       .mirror-grid {
-        grid-template-columns: 1fr;
-      }
-      h1 {
-        font-size: 2rem;
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   </style>
@@ -758,25 +783,35 @@
     }
 
     // ----------------------------------------------------
-    // DETERMINISTIC 2D ZONAL NAVIGATION SYSTEM (Apps 4x2 + Mirrors 2x3)
+    // DETERMINISTIC 2D ZONAL NAVIGATION SYSTEM (Adaptive 4x2 on TV / 2x4 on Mobile)
     // ----------------------------------------------------
-    const APP_GRID = [
-      ['app-nashid', 'app-lstv'],
-      ['app-sportzfy', 'app-implayer'],
-      ['app-streamvault', 'app-fredtv'],
-      ['app-smarters', 'app-xciptv']
-    ];
-
-    const MIRROR_GRID = [
-      ['pill-ghfast', 'pill-ghproxy', 'pill-ghproxy-org'],
-      ['pill-ghproxy-net', 'pill-cf-ghproxy', 'pill-direct']
-    ];
-
-    let currentZone = 'grid'; // 'grid' | 'mirror' | 'settings'
-    let gridRow = 0;
-    let gridCol = 0;
-    let mirrorRow = 0;
-    let mirrorCol = 0;
+    function getLayout() {
+      const isWidescreen = window.innerWidth > 900;
+      if (isWidescreen) {
+        return {
+          appGrid: [
+            ['app-nashid', 'app-lstv', 'app-sportzfy', 'app-implayer'],
+            ['app-streamvault', 'app-fredtv', 'app-smarters', 'app-xciptv']
+          ],
+          mirrorGrid: [
+            ['pill-ghfast', 'pill-ghproxy', 'pill-ghproxy-org', 'pill-ghproxy-net', 'pill-cf-ghproxy', 'pill-direct']
+          ]
+        };
+      } else {
+        return {
+          appGrid: [
+            ['app-nashid', 'app-lstv'],
+            ['app-sportzfy', 'app-implayer'],
+            ['app-streamvault', 'app-fredtv'],
+            ['app-smarters', 'app-xciptv']
+          ],
+          mirrorGrid: [
+            ['pill-ghfast', 'pill-ghproxy', 'pill-ghproxy-org'],
+            ['pill-ghproxy-net', 'pill-cf-ghproxy', 'pill-direct']
+          ]
+        };
+      }
+    }
 
     function applyFocus(elementId) {
       const el = document.getElementById(elementId);
@@ -786,111 +821,82 @@
       }
     }
 
-    function syncStateFromDOM() {
+    function navigateGrid(direction) {
+      const { appGrid, mirrorGrid } = getLayout();
       const active = document.activeElement;
-      if (!active) return;
-      const activeId = active.id;
+      const activeId = active ? active.id : '';
 
+      // Check if inside app grid
+      for (let r = 0; r < appGrid.length; r++) {
+        for (let c = 0; c < appGrid[r].length; c++) {
+          if (appGrid[r][c] === activeId) {
+            if (direction === 'right') {
+              if (c < appGrid[r].length - 1) applyFocus(appGrid[r][c + 1]);
+            } else if (direction === 'left') {
+              if (c > 0) applyFocus(appGrid[r][c - 1]);
+            } else if (direction === 'down') {
+              if (r < appGrid.length - 1) {
+                applyFocus(appGrid[r + 1][Math.min(c, appGrid[r + 1].length - 1)]);
+              } else {
+                // Move down into mirror grid
+                const targetCol = Math.min(Math.floor((c / appGrid[r].length) * mirrorGrid[0].length), mirrorGrid[0].length - 1);
+                applyFocus(mirrorGrid[0][targetCol]);
+              }
+            } else if (direction === 'up') {
+              if (r > 0) applyFocus(appGrid[r - 1][Math.min(c, appGrid[r - 1].length - 1)]);
+            }
+            return;
+          }
+        }
+      }
+
+      // Check if inside mirror grid
+      for (let r = 0; r < mirrorGrid.length; r++) {
+        for (let c = 0; c < mirrorGrid[r].length; c++) {
+          if (mirrorGrid[r][c] === activeId) {
+            if (direction === 'right') {
+              if (c < mirrorGrid[r].length - 1) {
+                applyFocus(mirrorGrid[r][c + 1]);
+              } else {
+                applyFocus('btn-settings');
+              }
+            } else if (direction === 'left') {
+              if (c > 0) applyFocus(mirrorGrid[r][c - 1]);
+            } else if (direction === 'down') {
+              if (r < mirrorGrid.length - 1) {
+                applyFocus(mirrorGrid[r + 1][Math.min(c, mirrorGrid[r + 1].length - 1)]);
+              } else {
+                applyFocus('btn-settings');
+              }
+            } else if (direction === 'up') {
+              if (r > 0) {
+                applyFocus(mirrorGrid[r - 1][Math.min(c, mirrorGrid[r - 1].length - 1)]);
+              } else {
+                // Move up into app grid bottom row
+                const lastAppRow = appGrid[appGrid.length - 1];
+                const targetCol = Math.min(Math.floor((c / mirrorGrid[r].length) * lastAppRow.length), lastAppRow.length - 1);
+                applyFocus(lastAppRow[targetCol]);
+              }
+            }
+            return;
+          }
+        }
+      }
+
+      // Check if on settings button
       if (activeId === 'btn-settings') {
-        currentZone = 'settings';
+        if (direction === 'left') {
+          const lastMirrorCol = mirrorGrid[0].length - 1;
+          applyFocus(mirrorGrid[0][lastMirrorCol]);
+        } else if (direction === 'up') {
+          const lastAppRow = appGrid[appGrid.length - 1];
+          applyFocus(lastAppRow[lastAppRow.length - 1]);
+        }
         return;
       }
 
-      for (let r = 0; r < APP_GRID.length; r++) {
-        for (let c = 0; c < APP_GRID[r].length; c++) {
-          if (APP_GRID[r][c] === activeId) {
-            currentZone = 'grid';
-            gridRow = r;
-            gridCol = c;
-            return;
-          }
-        }
-      }
-
-      for (let r = 0; r < MIRROR_GRID.length; r++) {
-        for (let c = 0; c < MIRROR_GRID[r].length; c++) {
-          if (MIRROR_GRID[r][c] === activeId) {
-            currentZone = 'mirror';
-            mirrorRow = r;
-            mirrorCol = c;
-            return;
-          }
-        }
-      }
-    }
-
-    function navigateGrid(direction) {
-      syncStateFromDOM();
-
-      if (currentZone === 'grid') {
-        if (direction === 'right' && gridCol < 1) {
-          gridCol = 1;
-          applyFocus(APP_GRID[gridRow][gridCol]);
-        } else if (direction === 'left' && gridCol > 0) {
-          gridCol = 0;
-          applyFocus(APP_GRID[gridRow][gridCol]);
-        } else if (direction === 'down') {
-          if (gridRow < APP_GRID.length - 1) {
-            gridRow++;
-            applyFocus(APP_GRID[gridRow][gridCol]);
-          } else {
-            // Move down from bottom row into Mirror Grid
-            currentZone = 'mirror';
-            mirrorRow = 0;
-            mirrorCol = (gridCol === 0) ? 0 : 2;
-            applyFocus(MIRROR_GRID[mirrorRow][mirrorCol]);
-          }
-        } else if (direction === 'up' && gridRow > 0) {
-          gridRow--;
-          applyFocus(APP_GRID[gridRow][gridCol]);
-        }
-      } else if (currentZone === 'mirror') {
-        if (direction === 'right') {
-          if (mirrorCol < MIRROR_GRID[mirrorRow].length - 1) {
-            mirrorCol++;
-            applyFocus(MIRROR_GRID[mirrorRow][mirrorCol]);
-          } else if (mirrorRow === 0) {
-            currentZone = 'settings';
-            applyFocus('btn-settings');
-          }
-        } else if (direction === 'left' && mirrorCol > 0) {
-          mirrorCol--;
-          applyFocus(MIRROR_GRID[mirrorRow][mirrorCol]);
-        } else if (direction === 'down') {
-          if (mirrorRow < MIRROR_GRID.length - 1) {
-            mirrorRow++;
-            applyFocus(MIRROR_GRID[mirrorRow][mirrorCol]);
-          }
-        } else if (direction === 'up') {
-          if (mirrorRow > 0) {
-            mirrorRow--;
-            applyFocus(MIRROR_GRID[mirrorRow][mirrorCol]);
-          } else {
-            // Return to App Grid bottom row
-            currentZone = 'grid';
-            gridRow = APP_GRID.length - 1;
-            gridCol = (mirrorCol <= 1) ? 0 : 1;
-            applyFocus(APP_GRID[gridRow][gridCol]);
-          }
-        }
-      } else if (currentZone === 'settings') {
-        if (direction === 'left') {
-          currentZone = 'mirror';
-          mirrorRow = 0;
-          mirrorCol = 2;
-          applyFocus(MIRROR_GRID[mirrorRow][mirrorCol]);
-        } else if (direction === 'down') {
-          currentZone = 'mirror';
-          mirrorRow = 1;
-          mirrorCol = 2;
-          applyFocus(MIRROR_GRID[mirrorRow][mirrorCol]);
-        } else if (direction === 'up') {
-          currentZone = 'grid';
-          gridRow = APP_GRID.length - 1;
-          gridCol = 1;
-          applyFocus(APP_GRID[gridRow][gridCol]);
-        }
-      }
+      // Fallback
+      applyFocus('app-nashid');
     }
 
     // ----------------------------------------------------
