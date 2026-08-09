@@ -77,10 +77,9 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      position: relative;
-      padding: clamp(10px, 2vh, 24px) clamp(16px, 3vw, 32px);
-      box-sizing: border-box;
       overflow-x: hidden;
+      position: relative;
+      padding: 30px 20px;
     }
 
     /* Ambient Google TV Background Glow */
@@ -97,70 +96,65 @@
       pointer-events: none;
     }
 
-    /* Viewport Fit Container (1140px on Widescreen TV) */
     .container {
-      max-width: 1140px;
+      max-width: 960px;
       width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: clamp(8px, 1.6vh, 16px);
+      gap: 24px;
       z-index: 1;
     }
 
-    /* Minimalist Compact Header */
+    /* Minimalist Header */
     .header {
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      gap: clamp(4px, 1vh, 8px);
+      gap: 10px;
     }
 
     .tv-logo-badge {
-      width: clamp(38px, 5vh, 48px);
-      height: clamp(38px, 5vh, 48px);
+      width: 64px;
+      height: 64px;
       background: rgba(56, 189, 248, 0.08);
       border: 1px solid rgba(56, 189, 248, 0.25);
-      border-radius: 14px;
+      border-radius: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.25);
     }
 
     .tv-logo-badge svg {
-      width: clamp(22px, 3vh, 28px);
-      height: clamp(22px, 3vh, 28px);
+      width: 36px;
+      height: 36px;
       fill: #38bdf8;
     }
 
     h1 {
-      font-size: clamp(1.4rem, 3.2vh, 2rem);
+      font-size: 2.35rem;
       font-weight: 800;
       letter-spacing: -0.01em;
       color: #ffffff;
-      line-height: 1.15;
     }
 
     .subtitle {
-      font-size: clamp(0.76rem, 1.5vh, 0.88rem);
+      font-size: 1rem;
       color: var(--text-muted);
-      max-width: 580px;
-      line-height: 1.35;
+      max-width: 520px;
+      line-height: 1.45;
       font-weight: 300;
     }
 
-    /* ----------------------------------------------------
-       RESPONSIVE 4-COLUMN x 2-ROW TV APPS GRID (ZERO SCROLL)
-       ---------------------------------------------------- */
+    /* Grid layout for Apps (Google TV 2-Column Responsive Grid) */
     .apps-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: clamp(8px, 1.2vh, 12px);
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
       width: 100%;
-      max-width: 1140px;
+      max-width: 880px;
     }
 
     /* Google TV Signature App Card */
@@ -168,11 +162,11 @@
       position: relative;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: clamp(10px, 1.4vh, 14px) clamp(10px, 1.2vw, 14px);
+      border-radius: 18px;
+      padding: 16px 20px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
       text-decoration: none;
       color: var(--text-main);
       outline: none;
@@ -181,13 +175,12 @@
       transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      min-width: 0;
     }
 
     .card-icon-wrap {
-      width: clamp(38px, 5vh, 44px);
-      height: clamp(38px, 5vh, 44px);
-      border-radius: 11px;
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
       background: #141724;
       border: 1px solid rgba(255, 255, 255, 0.08);
       display: flex;
@@ -195,7 +188,7 @@
       justify-content: center;
       flex-shrink: 0;
       overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
       transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
@@ -203,7 +196,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 10px;
+      border-radius: 13px;
       transition: transform 0.24s ease;
     }
 
@@ -211,57 +204,53 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 2px;
+      gap: 3px;
       flex: 1;
       min-width: 0;
-      overflow: hidden;
     }
 
     .app-title {
-      font-size: clamp(0.88rem, 1.7vh, 1.02rem);
+      font-size: 1.15rem;
       font-weight: 700;
       letter-spacing: -0.01em;
       color: var(--text-main);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 100%;
       transition: color 0.24s ease;
     }
 
     .app-meta {
-      font-size: clamp(0.7rem, 1.3vh, 0.78rem);
+      font-size: 0.82rem;
       font-weight: 400;
       color: var(--text-muted);
       display: flex;
       align-items: center;
-      gap: 5px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 100%;
+      gap: 6px;
       transition: color 0.24s ease;
     }
 
     .app-tag {
-      font-size: 0.64rem;
+      font-size: 0.7rem;
       font-weight: 600;
-      padding: 1px 5px;
-      border-radius: 4px;
+      padding: 2px 6px;
+      border-radius: 5px;
       background: rgba(255, 255, 255, 0.08);
       color: #cbd5e1;
       text-transform: uppercase;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.03em;
       transition: all 0.24s ease;
     }
 
-    /* Focus State */
+    /* ----------------------------------------------------
+       THE GOOGLE TV SIGNATURE FOCUS EFFECT (Pure Contrast)
+       ---------------------------------------------------- */
     .app-card:focus,
     .app-card.focused {
       background: var(--focus-bg) !important;
       color: var(--focus-text) !important;
       border-color: #ffffff !important;
-      transform: translateY(-3px) scale(1.025);
+      transform: translateY(-4px) scale(1.03);
       box-shadow: var(--focus-shadow);
       z-index: 10;
     }
@@ -298,124 +287,83 @@
       transform: scale(0.98);
     }
 
-    /* ----------------------------------------------------
-       COMPACT ZERO-OVERFLOW SPEED ACCELERATOR CARD
-       ---------------------------------------------------- */
-    .utility-card {
-      width: 100%;
-      max-width: 1140px;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: clamp(8px, 1.2vh, 14px) clamp(12px, 1.5vw, 18px);
+    /* Compact Accelerator & Settings Utility Bar */
+    .utility-bar {
       display: flex;
-      flex-direction: column;
-      gap: clamp(6px, 1vh, 10px);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      width: 100%;
+      max-width: 880px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 10px 16px;
       box-sizing: border-box;
     }
 
-    .utility-header {
+    .accelerator-group {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      width: 100%;
+      gap: 8px;
+      flex-wrap: wrap;
+      flex: 1;
+      min-width: 0;
     }
 
-    .utility-title {
-      font-size: clamp(0.72rem, 1.4vh, 0.8rem);
-      font-weight: 700;
+    .utility-label {
+      font-size: 0.78rem;
+      font-weight: 600;
       color: #94a3b8;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.04em;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
+      white-space: nowrap;
     }
 
-    .mirror-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: clamp(6px, 0.8vw, 8px);
-      width: 100%;
+    .mirror-pills {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
     }
 
     .pill-btn {
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.08);
       color: #cbd5e1;
-      padding: clamp(6px, 1vh, 8px) 6px;
+      padding: 6px 12px;
       border-radius: 10px;
+      font-size: 0.76rem;
+      font-weight: 500;
       font-family: inherit;
       cursor: pointer;
       outline: none;
-      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.2s ease;
       user-select: none;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 2px;
-      min-width: 0;
-      text-align: center;
-    }
-
-    .pill-name {
-      font-size: clamp(0.72rem, 1.3vh, 0.78rem);
-      font-weight: 600;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 100%;
-      transition: color 0.2s ease;
-    }
-
-    .pill-speed {
-      font-size: clamp(0.64rem, 1.1vh, 0.7rem);
-      color: #64748b;
-      font-weight: 500;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 100%;
-      transition: color 0.2s ease;
     }
 
     .pill-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.12);
       color: #ffffff;
     }
 
     .pill-btn:focus,
     .pill-btn.focused {
       background: #ffffff !important;
-      color: #090d16 !important;
+      color: #0f172a !important;
       border-color: #ffffff !important;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-      transform: translateY(-2px) scale(1.02);
-      z-index: 5;
-    }
-
-    .pill-btn:focus .pill-name,
-    .pill-btn.focused .pill-name {
-      color: #090d16 !important;
-    }
-
-    .pill-btn:focus .pill-speed,
-    .pill-btn.focused .pill-speed {
-      color: #334155 !important;
-      font-weight: 600;
+      box-shadow: 0 0 16px rgba(255, 255, 255, 0.6);
+      transform: scale(1.05);
     }
 
     .pill-btn.active {
-      background: rgba(56, 189, 248, 0.12);
+      background: rgba(56, 189, 248, 0.2);
       border-color: #38bdf8;
-      color: #38bdf8;
-    }
-
-    .pill-btn.active .pill-speed {
       color: #38bdf8;
       font-weight: 600;
     }
@@ -424,18 +372,19 @@
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.08);
       color: #cbd5e1;
-      padding: 5px 12px;
-      border-radius: 8px;
-      font-size: clamp(0.72rem, 1.3vh, 0.78rem);
+      padding: 6px 14px;
+      border-radius: 10px;
+      font-size: 0.78rem;
       font-weight: 500;
       cursor: pointer;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
       outline: none;
       transition: all 0.2s ease;
       white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .settings-btn:focus,
@@ -451,32 +400,32 @@
     .trust-footer {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       color: #64748b;
-      font-size: clamp(0.7rem, 1.3vh, 0.78rem);
-      margin-top: 2px;
+      font-size: 0.82rem;
+      margin-top: 4px;
     }
 
     .trust-footer svg {
-      width: 12px;
-      height: 12px;
+      width: 14px;
+      height: 14px;
       fill: #10b981;
     }
 
     /* Smart Input & Device Detection Toast Badge */
     .input-mode-badge {
       position: fixed;
-      bottom: 16px;
-      right: 16px;
+      bottom: 20px;
+      right: 20px;
       background: rgba(15, 23, 42, 0.95);
       border: 1px solid rgba(56, 189, 248, 0.35);
-      padding: 6px 12px;
-      border-radius: 10px;
-      font-size: 0.74rem;
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-size: 0.78rem;
       color: #38bdf8;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
       z-index: 100;
       backdrop-filter: blur(10px);
@@ -491,34 +440,24 @@
     }
 
     .status-dot {
-      width: 6px;
-      height: 6px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: #10b981;
-      box-shadow: 0 0 6px #10b981;
+      box-shadow: 0 0 8px #10b981;
     }
 
-    /* Medium Tablet & Portrait Layout */
-    @media (max-width: 900px) {
-      .apps-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .mirror-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    /* Mobile Phones (Scrollable) */
-    @media (max-width: 600px) {
-      body {
-        padding: 20px 14px;
-        justify-content: flex-start;
-      }
+    /* Mobile Responsive */
+    @media (max-width: 680px) {
       .apps-grid {
         grid-template-columns: 1fr;
       }
-      .mirror-grid {
-        grid-template-columns: repeat(2, 1fr);
+      h1 {
+        font-size: 2rem;
+      }
+      .utility-bar {
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
   </style>
@@ -672,49 +611,31 @@
 
     </main>
 
-    <!-- Google TV Symmetrical Speed Mirror & Settings Card (880px) -->
-    <div class="utility-card" id="utility-card">
-      <div class="utility-header">
-        <div class="utility-title">
-          <svg style="width:14px;height:14px;fill:#38bdf8;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <!-- Compact Utility Bar: Accelerator Selector + TV Settings -->
+    <div class="utility-bar" id="utility-bar">
+      <div class="accelerator-group">
+        <span class="utility-label">
+          <svg style="width:13px;height:13px;fill:#38bdf8;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path d="M7 2v11h3v9l7-12h-4l4-8z"/>
           </svg>
-          <span>Speed Accelerator Mirrors</span>
+          Speed Mirror:
+        </span>
+        <div class="mirror-pills" role="group" aria-label="Speed Mirror Selector">
+          <button type="button" class="pill-btn active" data-mirror="ghfast" id="pill-ghfast" tabindex="0">⚡ ghfast.top</button>
+          <button type="button" class="pill-btn" data-mirror="ghproxy" id="pill-ghproxy" tabindex="0">🚀 gh-proxy.com</button>
+          <button type="button" class="pill-btn" data-mirror="ghproxy_org" id="pill-ghproxy-org" tabindex="0">🚀 gh-proxy.org</button>
+          <button type="button" class="pill-btn" data-mirror="ghproxy_net" id="pill-ghproxy-net" tabindex="0">🚀 ghproxy.net</button>
+          <button type="button" class="pill-btn" data-mirror="cf_ghproxy" id="pill-cf-ghproxy" tabindex="0">🚀 cf.ghproxy.cc</button>
+          <button type="button" class="pill-btn" data-mirror="direct" id="pill-direct" tabindex="0">🌐 Direct</button>
         </div>
-        <a href="intent://com.android.settings/#Intent;scheme=android-app;end" class="settings-btn" id="btn-settings" title="Open TV Settings" tabindex="0">
-          <svg style="width:13px;height:13px;fill:currentColor;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
-          </svg>
-          <span>TV Settings</span>
-        </a>
       </div>
 
-      <div class="mirror-grid" role="group" aria-label="Speed Mirror Selector">
-        <button type="button" class="pill-btn active" data-mirror="ghfast" id="pill-ghfast" tabindex="0">
-          <span class="pill-name">⚡ ghfast.top</span>
-          <span class="pill-speed" id="speed-ghfast">Default Mirror</span>
-        </button>
-        <button type="button" class="pill-btn" data-mirror="ghproxy" id="pill-ghproxy" tabindex="0">
-          <span class="pill-name">🚀 gh-proxy.com</span>
-          <span class="pill-speed" id="speed-ghproxy">Testing...</span>
-        </button>
-        <button type="button" class="pill-btn" data-mirror="ghproxy_org" id="pill-ghproxy-org" tabindex="0">
-          <span class="pill-name">🚀 gh-proxy.org</span>
-          <span class="pill-speed" id="speed-ghproxy-org">Testing...</span>
-        </button>
-        <button type="button" class="pill-btn" data-mirror="ghproxy_net" id="pill-ghproxy-net" tabindex="0">
-          <span class="pill-name">🚀 ghproxy.net</span>
-          <span class="pill-speed" id="speed-ghproxy-net">Testing...</span>
-        </button>
-        <button type="button" class="pill-btn" data-mirror="cf_ghproxy" id="pill-cf-ghproxy" tabindex="0">
-          <span class="pill-name">🚀 cf.ghproxy.cc</span>
-          <span class="pill-speed" id="speed-cf-ghproxy">Testing...</span>
-        </button>
-        <button type="button" class="pill-btn" data-mirror="direct" id="pill-direct" tabindex="0">
-          <span class="pill-name">🌐 Direct GitHub</span>
-          <span class="pill-speed" id="speed-direct">Manual Only</span>
-        </button>
-      </div>
+      <a href="intent://com.android.settings/#Intent;scheme=android-app;end" class="settings-btn" id="btn-settings" title="Open TV Settings" tabindex="0">
+        <svg style="width:14px;height:14px;fill:currentColor;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+        </svg>
+        <span>TV Settings</span>
+      </a>
     </div>
 
     <!-- Trust Footer -->
@@ -783,35 +704,29 @@
     }
 
     // ----------------------------------------------------
-    // DETERMINISTIC 2D ZONAL NAVIGATION SYSTEM (Adaptive 4x2 on TV / 2x4 on Mobile)
+    // DETERMINISTIC 2D ZONAL NAVIGATION SYSTEM (4 Rows x 2 Cols)
     // ----------------------------------------------------
-    function getLayout() {
-      const isWidescreen = window.innerWidth > 900;
-      if (isWidescreen) {
-        return {
-          appGrid: [
-            ['app-nashid', 'app-lstv', 'app-sportzfy', 'app-implayer'],
-            ['app-streamvault', 'app-fredtv', 'app-smarters', 'app-xciptv']
-          ],
-          mirrorGrid: [
-            ['pill-ghfast', 'pill-ghproxy', 'pill-ghproxy-org', 'pill-ghproxy-net', 'pill-cf-ghproxy', 'pill-direct']
-          ]
-        };
-      } else {
-        return {
-          appGrid: [
-            ['app-nashid', 'app-lstv'],
-            ['app-sportzfy', 'app-implayer'],
-            ['app-streamvault', 'app-fredtv'],
-            ['app-smarters', 'app-xciptv']
-          ],
-          mirrorGrid: [
-            ['pill-ghfast', 'pill-ghproxy', 'pill-ghproxy-org'],
-            ['pill-ghproxy-net', 'pill-cf-ghproxy', 'pill-direct']
-          ]
-        };
-      }
-    }
+    const APP_GRID = [
+      ['app-nashid', 'app-lstv'],
+      ['app-sportzfy', 'app-implayer'],
+      ['app-streamvault', 'app-fredtv'],
+      ['app-smarters', 'app-xciptv']
+    ];
+
+    const UTILITY_ROW = [
+      'pill-ghfast',
+      'pill-ghproxy',
+      'pill-ghproxy-org',
+      'pill-ghproxy-net',
+      'pill-cf-ghproxy',
+      'pill-direct',
+      'btn-settings'
+    ];
+
+    let currentZone = 'grid'; // 'grid' | 'utility'
+    let gridRow = 0;
+    let gridCol = 0;
+    let utilityIndex = 0;
 
     function applyFocus(elementId) {
       const el = document.getElementById(elementId);
@@ -821,82 +736,78 @@
       }
     }
 
-    function navigateGrid(direction) {
-      const { appGrid, mirrorGrid } = getLayout();
+    function syncStateFromDOM() {
       const active = document.activeElement;
-      const activeId = active ? active.id : '';
+      if (!active) return;
+      const activeId = active.id;
 
-      // Check if inside app grid
-      for (let r = 0; r < appGrid.length; r++) {
-        for (let c = 0; c < appGrid[r].length; c++) {
-          if (appGrid[r][c] === activeId) {
-            if (direction === 'right') {
-              if (c < appGrid[r].length - 1) applyFocus(appGrid[r][c + 1]);
-            } else if (direction === 'left') {
-              if (c > 0) applyFocus(appGrid[r][c - 1]);
-            } else if (direction === 'down') {
-              if (r < appGrid.length - 1) {
-                applyFocus(appGrid[r + 1][Math.min(c, appGrid[r + 1].length - 1)]);
-              } else {
-                // Move down into mirror grid
-                const targetCol = Math.min(Math.floor((c / appGrid[r].length) * mirrorGrid[0].length), mirrorGrid[0].length - 1);
-                applyFocus(mirrorGrid[0][targetCol]);
-              }
-            } else if (direction === 'up') {
-              if (r > 0) applyFocus(appGrid[r - 1][Math.min(c, appGrid[r - 1].length - 1)]);
-            }
+      for (let r = 0; r < APP_GRID.length; r++) {
+        for (let c = 0; c < APP_GRID[r].length; c++) {
+          if (APP_GRID[r][c] === activeId) {
+            currentZone = 'grid';
+            gridRow = r;
+            gridCol = c;
             return;
           }
         }
       }
 
-      // Check if inside mirror grid
-      for (let r = 0; r < mirrorGrid.length; r++) {
-        for (let c = 0; c < mirrorGrid[r].length; c++) {
-          if (mirrorGrid[r][c] === activeId) {
-            if (direction === 'right') {
-              if (c < mirrorGrid[r].length - 1) {
-                applyFocus(mirrorGrid[r][c + 1]);
-              } else {
-                applyFocus('btn-settings');
-              }
-            } else if (direction === 'left') {
-              if (c > 0) applyFocus(mirrorGrid[r][c - 1]);
-            } else if (direction === 'down') {
-              if (r < mirrorGrid.length - 1) {
-                applyFocus(mirrorGrid[r + 1][Math.min(c, mirrorGrid[r + 1].length - 1)]);
-              } else {
-                applyFocus('btn-settings');
-              }
-            } else if (direction === 'up') {
-              if (r > 0) {
-                applyFocus(mirrorGrid[r - 1][Math.min(c, mirrorGrid[r - 1].length - 1)]);
-              } else {
-                // Move up into app grid bottom row
-                const lastAppRow = appGrid[appGrid.length - 1];
-                const targetCol = Math.min(Math.floor((c / mirrorGrid[r].length) * lastAppRow.length), lastAppRow.length - 1);
-                applyFocus(lastAppRow[targetCol]);
-              }
-            }
-            return;
-          }
-        }
+      const uIdx = UTILITY_ROW.indexOf(activeId);
+      if (uIdx !== -1) {
+        currentZone = 'utility';
+        utilityIndex = uIdx;
       }
+    }
 
-      // Check if on settings button
-      if (activeId === 'btn-settings') {
-        if (direction === 'left') {
-          const lastMirrorCol = mirrorGrid[0].length - 1;
-          applyFocus(mirrorGrid[0][lastMirrorCol]);
+    function navigateGrid(direction) {
+      syncStateFromDOM();
+
+      if (currentZone === 'grid') {
+        if (direction === 'right') {
+          if (gridCol < 1) {
+            gridCol = 1;
+            applyFocus(APP_GRID[gridRow][gridCol]);
+          }
+        } else if (direction === 'left') {
+          if (gridCol > 0) {
+            gridCol = 0;
+            applyFocus(APP_GRID[gridRow][gridCol]);
+          }
+        } else if (direction === 'down') {
+          if (gridRow < APP_GRID.length - 1) {
+            gridRow++;
+            applyFocus(APP_GRID[gridRow][gridCol]);
+          } else {
+            // Move down from bottom row into utility bar
+            currentZone = 'utility';
+            utilityIndex = (gridCol === 0) ? 0 : UTILITY_ROW.length - 1;
+            applyFocus(UTILITY_ROW[utilityIndex]);
+          }
         } else if (direction === 'up') {
-          const lastAppRow = appGrid[appGrid.length - 1];
-          applyFocus(lastAppRow[lastAppRow.length - 1]);
+          if (gridRow > 0) {
+            gridRow--;
+            applyFocus(APP_GRID[gridRow][gridCol]);
+          }
         }
-        return;
+      } else if (currentZone === 'utility') {
+        if (direction === 'right') {
+          if (utilityIndex < UTILITY_ROW.length - 1) {
+            utilityIndex++;
+            applyFocus(UTILITY_ROW[utilityIndex]);
+          }
+        } else if (direction === 'left') {
+          if (utilityIndex > 0) {
+            utilityIndex--;
+            applyFocus(UTILITY_ROW[utilityIndex]);
+          }
+        } else if (direction === 'up') {
+          // Return to App Grid bottom row
+          currentZone = 'grid';
+          gridRow = APP_GRID.length - 1; // row 3
+          gridCol = (utilityIndex <= 2) ? 0 : 1;
+          applyFocus(APP_GRID[gridRow][gridCol]);
+        }
       }
-
-      // Fallback
-      applyFocus('app-nashid');
     }
 
     // ----------------------------------------------------
@@ -1047,9 +958,11 @@
     }
 
     function updatePillStatus(key, speedMbps, pingMs) {
-      const speedEl = document.getElementById('speed-' + key.replace('_', '-'));
-      if (speedEl && speedMbps > 0) {
-        speedEl.textContent = `${formatSpeed(speedMbps)} • ${pingMs}ms`;
+      const btn = document.querySelector(`[data-mirror="${key}"]`);
+      if (!btn) return;
+      const label = PILL_DEFAULT_LABELS[key] || key;
+      if (speedMbps > 0) {
+        btn.textContent = `${label} (${formatSpeed(speedMbps)})`;
       }
     }
 
