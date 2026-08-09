@@ -28,7 +28,7 @@
   <meta property="twitter:image" content="https://nashidazaz.github.io/tv/screenshot.png">
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="index.css?v=1.0.4">
+  <link rel="stylesheet" href="index.css?v=1.0.5">
   
   <!-- Favicon icon -->
   <link rel="icon" type="image/png" href="favicon.png">
@@ -72,6 +72,37 @@
 
         <!-- Main Action (Download Buttons Container) -->
         <div class="download-container">
+          <!-- Download Speed Accelerator Card -->
+          <div class="accelerator-card">
+            <div class="accelerator-header">
+              <div class="accelerator-title">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path d="M7 2v11h3v9l7-12h-4l4-8z"/>
+                </svg>
+                <span>Download Accelerator</span>
+              </div>
+              <span id="mirror-status-badge" class="mirror-badge accelerated">⚡ ghfast (Fast CDN)</span>
+            </div>
+            <div class="mirror-selector" role="group" aria-label="Download Server Accelerator">
+              <button type="button" class="mirror-btn active" data-mirror="ghfast" id="mirror-btn-ghfast" title="Fast CDN Mirror (Recommended)">
+                <span>⚡ ghfast.top</span>
+              </button>
+              <button type="button" class="mirror-btn" data-mirror="ghproxy" id="mirror-btn-ghproxy" title="Global Proxy Mirror 1">
+                <span>🚀 gh-proxy.com</span>
+              </button>
+              <button type="button" class="mirror-btn" data-mirror="ghproxy_org" id="mirror-btn-ghproxy-org" title="Global Proxy Mirror 2">
+                <span>🚀 gh-proxy.org</span>
+              </button>
+              <button type="button" class="mirror-btn" data-mirror="ghddlc" id="mirror-btn-ghddlc" title="DDLC Proxy Mirror 3">
+                <span>🚀 gh.ddlc.top</span>
+              </button>
+              <button type="button" class="mirror-btn" data-mirror="direct" id="mirror-btn-direct" title="Direct GitHub Default">
+                <span>🌐 Direct</span>
+              </button>
+            </div>
+            <p class="mirror-hint">Bypasses ISP throttling for high-speed APK downloads.</p>
+          </div>
+
           <!-- Main APK -->
           <a href="nashidtv.apk" id="download-btn-nashid" class="download-btn primary-btn" autofocus download="nashidtv.apk">
             <div class="btn-title">
@@ -173,12 +204,97 @@
     </footer>
   </div>
 
-  <!-- Auto-focus script for TV Remote Control D-pad support -->
+  <!-- TV Remote Control D-pad support & Download Accelerator Engine -->
   <script>
+    const RAW_GITHUB_BASE = 'https://raw.githubusercontent.com/nashidazaz/tv/main/';
+
+    const MIRRORS = {
+      ghfast: {
+        name: 'ghfast.top',
+        badge: '⚡ ghfast (Fast CDN)',
+        prefix: 'https://ghfast.top/' + RAW_GITHUB_BASE
+      },
+      ghproxy: {
+        name: 'gh-proxy.com',
+        badge: '🚀 gh-proxy.com',
+        prefix: 'https://gh-proxy.com/' + RAW_GITHUB_BASE
+      },
+      ghproxy_org: {
+        name: 'gh-proxy.org',
+        badge: '🚀 gh-proxy.org',
+        prefix: 'https://gh-proxy.org/' + RAW_GITHUB_BASE
+      },
+      ghddlc: {
+        name: 'gh.ddlc.top',
+        badge: '🚀 gh.ddlc.top',
+        prefix: 'https://gh.ddlc.top/' + RAW_GITHUB_BASE
+      },
+      direct: {
+        name: 'Direct (GitHub)',
+        badge: '🌐 Direct (Standard)',
+        prefix: ''
+      }
+    };
+
+    const APK_FILES = {
+      nashid: 'nashidtv.apk',
+      lstv: 'ls-tv.apk',
+      sportzfy: 'Sportzfy_v28.apk'
+    };
+
+    function updateDownloadLinks(mirrorKey) {
+      if (!MIRRORS[mirrorKey]) mirrorKey = 'ghfast';
+
+      try {
+        localStorage.setItem('nashid_download_mirror', mirrorKey);
+      } catch (e) {}
+
+      const mirror = MIRRORS[mirrorKey];
+      const isDirect = mirrorKey === 'direct';
+
+      const btnNashid = document.getElementById('download-btn-nashid');
+      const btnLstv = document.getElementById('download-btn-lstv');
+      const btnSportzfy = document.getElementById('download-btn-sportzfy');
+
+      if (btnNashid) btnNashid.href = isDirect ? APK_FILES.nashid : mirror.prefix + APK_FILES.nashid;
+      if (btnLstv) btnLstv.href = isDirect ? APK_FILES.lstv : mirror.prefix + APK_FILES.lstv;
+      if (btnSportzfy) btnSportzfy.href = isDirect ? APK_FILES.sportzfy : mirror.prefix + APK_FILES.sportzfy;
+
+      // Update mirror button states
+      document.querySelectorAll('.mirror-btn').forEach(btn => {
+        const active = btn.getAttribute('data-mirror') === mirrorKey;
+        btn.classList.toggle('active', active);
+        btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+
+      // Update badge
+      const statusBadge = document.getElementById('mirror-status-badge');
+      if (statusBadge) {
+        statusBadge.textContent = mirror.badge;
+        statusBadge.className = isDirect ? 'mirror-badge direct' : 'mirror-badge accelerated';
+      }
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
+      let savedMirror = 'ghfast';
+      try {
+        savedMirror = localStorage.getItem('nashid_download_mirror') || 'ghfast';
+      } catch (e) {}
+
+      updateDownloadLinks(savedMirror);
+
+      // Bind mirror buttons
+      document.querySelectorAll('.mirror-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const mirrorKey = btn.getAttribute('data-mirror');
+          updateDownloadLinks(mirrorKey);
+        });
+      });
+
+      // Force focus on main download button on load for TV D-pad
       const downloadBtn = document.getElementById('download-btn-nashid');
       if (downloadBtn) {
-        // Force focus on load so D-pad selects it immediately (removed scrollIntoView to prevent logo cutoff)
         downloadBtn.focus();
       }
     });
