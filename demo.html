@@ -584,7 +584,8 @@
           <button type="button" class="pill-btn active" data-mirror="ghfast" id="pill-ghfast" tabindex="0">⚡ ghfast.top</button>
           <button type="button" class="pill-btn" data-mirror="ghproxy" id="pill-ghproxy" tabindex="0">🚀 gh-proxy.com</button>
           <button type="button" class="pill-btn" data-mirror="ghproxy_org" id="pill-ghproxy-org" tabindex="0">🚀 gh-proxy.org</button>
-          <button type="button" class="pill-btn" data-mirror="ghddlc" id="pill-ghddlc" tabindex="0">🚀 gh.ddlc.top</button>
+          <button type="button" class="pill-btn" data-mirror="ghproxy_net" id="pill-ghproxy-net" tabindex="0">🚀 ghproxy.net</button>
+          <button type="button" class="pill-btn" data-mirror="cf_ghproxy" id="pill-cf-ghproxy" tabindex="0">🚀 cf.ghproxy.cc</button>
           <button type="button" class="pill-btn" data-mirror="direct" id="pill-direct" tabindex="0">🌐 Direct</button>
         </div>
       </div>
@@ -621,7 +622,8 @@
       ghfast: { name: 'ghfast.top', prefix: 'https://ghfast.top/' + RAW_GITHUB_BASE },
       ghproxy: { name: 'gh-proxy.com', prefix: 'https://gh-proxy.com/' + RAW_GITHUB_BASE },
       ghproxy_org: { name: 'gh-proxy.org', prefix: 'https://gh-proxy.org/' + RAW_GITHUB_BASE },
-      ghddlc: { name: 'gh.ddlc.top', prefix: 'https://gh.ddlc.top/' + RAW_GITHUB_BASE },
+      ghproxy_net: { name: 'ghproxy.net', prefix: 'https://ghproxy.net/' + RAW_GITHUB_BASE },
+      cf_ghproxy: { name: 'cf.ghproxy.cc', prefix: 'https://cf.ghproxy.cc/' + RAW_GITHUB_BASE },
       direct: { name: 'Direct', prefix: '' }
     };
 
@@ -675,7 +677,8 @@
       'pill-ghfast',
       'pill-ghproxy',
       'pill-ghproxy-org',
-      'pill-ghddlc',
+      'pill-ghproxy-net',
+      'pill-cf-ghproxy',
       'pill-direct',
       'btn-settings'
     ];
@@ -901,7 +904,8 @@
       ghfast: '⚡ ghfast.top',
       ghproxy: '🚀 gh-proxy.com',
       ghproxy_org: '🚀 gh-proxy.org',
-      ghddlc: '🚀 gh.ddlc.top',
+      ghproxy_net: '🚀 ghproxy.net',
+      cf_ghproxy: '🚀 cf.ghproxy.cc',
       direct: '🌐 Direct'
     };
 
@@ -920,12 +924,14 @@
     async function runBackgroundSpeedBenchmark() {
       // 220KB asset test to measure exact throughput with zero data waste
       const TEST_ASSET = 'icons/sportzfy.png?speedtest=' + Date.now();
-      const mirrorKeys = ['ghfast', 'ghproxy', 'ghproxy_org', 'ghddlc', 'direct'];
+      
+      // ONLY PROXY MIRRORS ARE ELIGIBLE FOR AUTO-SELECTION (Direct is excluded per user preference!)
+      const proxyKeysToTest = ['ghfast', 'ghproxy', 'ghproxy_org', 'ghproxy_net', 'cf_ghproxy'];
       const results = {};
 
-      const testPromises = mirrorKeys.map(async (key) => {
+      const testPromises = proxyKeysToTest.map(async (key) => {
         const mirror = MIRRORS[key];
-        const url = (key === 'direct') ? RAW_GITHUB_BASE + TEST_ASSET : mirror.prefix + TEST_ASSET;
+        const url = mirror.prefix + TEST_ASSET;
 
         const startTime = performance.now();
         try {
@@ -952,7 +958,7 @@
 
       await Promise.allSettled(testPromises);
 
-      // Auto-select fastest winner if user has not manually overridden
+      // Auto-select fastest PROXY winner (Direct is excluded!)
       if (!manualOverride && !testAbortController.signal.aborted) {
         let bestKey = 'ghfast';
         let maxSpeed = -1;
@@ -966,7 +972,7 @@
 
         if (bestKey && results[bestKey]?.success) {
           updateDownloadLinks(bestKey);
-          showInputBadge(`⚡ Optimal Mirror Selected: ${MIRRORS[bestKey].name}`);
+          showInputBadge(`⚡ Optimal Mirror: ${MIRRORS[bestKey].name}`);
         }
       }
     }
@@ -976,6 +982,8 @@
       let savedMirror = 'ghfast';
       try {
         savedMirror = localStorage.getItem('nashid_download_mirror') || 'ghfast';
+        // If previously saved as direct, default to ghfast for safety unless manually chosen in current session
+        if (savedMirror === 'direct') savedMirror = 'ghfast';
       } catch (e) {}
       
       // 1. Instant Default at 0ms (ghfast.top)
@@ -1013,7 +1021,7 @@
       // Start Gamepad API Loop
       requestAnimationFrame(pollGamepad);
 
-      // Start Silent Background Throughput Speed Test (after 100ms idle)
+      // Start Silent Background Throughput Speed Test (after 150ms idle)
       setTimeout(runBackgroundSpeedBenchmark, 150);
     });
 
