@@ -142,22 +142,25 @@
     }
 
     .card-icon-wrap {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
       background: rgba(255, 255, 255, 0.06);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
       transition: all 0.24s ease;
     }
 
-    .card-icon-wrap svg {
-      width: 24px;
-      height: 24px;
-      fill: #94a3b8;
-      transition: fill 0.24s ease;
+    .card-icon-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 14px;
+      transition: transform 0.24s ease;
     }
 
     .card-content {
@@ -217,12 +220,12 @@
 
     .app-card:focus .card-icon-wrap,
     .app-card.focused .card-icon-wrap {
-      background: rgba(14, 165, 233, 0.15);
+      box-shadow: 0 0 16px rgba(0, 0, 0, 0.2);
     }
 
-    .app-card:focus .card-icon-wrap svg,
-    .app-card.focused .card-icon-wrap svg {
-      fill: #0284c7;
+    .app-card:focus .card-icon-img,
+    .app-card.focused .card-icon-img {
+      transform: scale(1.06);
     }
 
     .app-card:focus .app-title,
@@ -438,9 +441,7 @@
       <!-- Row 0, Col 0: Nashid TV -->
       <a href="nashidtv.apk" class="app-card" id="app-nashid" download="nashidtv.apk" tabindex="0" autofocus>
         <div class="card-icon-wrap">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
-          </svg>
+          <img src="icons/nashidtv.png" alt="Nashid TV" class="card-icon-img" loading="eager">
         </div>
         <div class="card-content">
           <span class="app-title">Nashid TV</span>
@@ -456,9 +457,7 @@
       <!-- Row 0, Col 1: LS TV -->
       <a href="ls-tv.apk" class="app-card" id="app-lstv" download="ls-tv.apk" tabindex="0">
         <div class="card-icon-wrap">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
-          </svg>
+          <img src="icons/lstv.png" alt="LS TV" class="card-icon-img" loading="eager">
         </div>
         <div class="card-content">
           <span class="app-title">LS TV</span>
@@ -474,9 +473,7 @@
       <!-- Row 1, Col 0: Sportzfy -->
       <a href="Sportzfy_v28.apk" class="app-card" id="app-sportzfy" download="Sportzfy_v28.apk" tabindex="0">
         <div class="card-icon-wrap">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
-          </svg>
+          <img src="icons/sportzfy.png" alt="Sportzfy" class="card-icon-img" loading="eager">
         </div>
         <div class="card-content">
           <span class="app-title">Sportzfy</span>
@@ -492,9 +489,7 @@
       <!-- Row 1, Col 1: iMPlayer Official -->
       <a href="implayer_411_official.apk" class="app-card" id="app-implayer" download="implayer_411_official.apk" tabindex="0">
         <div class="card-icon-wrap">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
-          </svg>
+          <img src="icons/implayer.png" alt="iMPlayer" class="card-icon-img" loading="eager">
         </div>
         <div class="card-content">
           <span class="app-title">iMPlayer</span>
@@ -510,9 +505,7 @@
       <!-- Row 2, Col 0: StreamVault IPTV -->
       <a href="streamvault.apk" class="app-card" id="app-streamvault" download="streamvault.apk" tabindex="0">
         <div class="card-icon-wrap">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
-          </svg>
+          <img src="icons/streamvault.png" alt="StreamVault" class="card-icon-img" loading="eager">
         </div>
         <div class="card-content">
           <span class="app-title">StreamVault</span>
@@ -528,9 +521,7 @@
       <!-- Row 2, Col 1: Fred TV -->
       <a href="fred-tv.apk" class="app-card" id="app-fredtv" download="fred-tv.apk" tabindex="0">
         <div class="card-icon-wrap">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
-          </svg>
+          <img src="icons/fredtv.png" alt="Fred TV" class="card-icon-img" loading="eager">
         </div>
         <div class="card-content">
           <span class="app-title">Fred TV</span>
@@ -546,9 +537,7 @@
       <!-- Row 3, Col 0: IPTV Smarters Pro -->
       <a href="https://www.iptvsmarters.com/iptv-smarters-5.0.apk" class="app-card" id="app-smarters" target="_blank" rel="noopener" tabindex="0">
         <div class="card-icon-wrap">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
-          </svg>
+          <img src="icons/smarters.png" alt="IPTV Smarters Pro" class="card-icon-img" loading="eager">
         </div>
         <div class="card-content">
           <span class="app-title">IPTV Smarters Pro</span>
@@ -564,9 +553,7 @@
       <!-- Row 3, Col 1: XCIPTV Player -->
       <a href="https://play.google.com/store/apps/details?id=com.nathnetwork.xciptv" class="app-card" id="app-xciptv" target="_blank" rel="noopener" tabindex="0">
         <div class="card-icon-wrap">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
-          </svg>
+          <img src="icons/xciptv.png" alt="XCIPTV Player" class="card-icon-img" loading="eager">
         </div>
         <div class="card-content">
           <span class="app-title">XCIPTV Player</span>
