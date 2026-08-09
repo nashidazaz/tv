@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Nashid TV - Google TV Minimalist Demo</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-color: #0c0f17;
+      --card-bg: rgba(255, 255, 255, 0.04);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-cyan: #00f2fe;
+      --accent-blue: #38bdf8;
+      --focus-bg: #ffffff;
+      --focus-text: #090d16;
+      --focus-sub: #475569;
+      --focus-shadow: 0 0 45px rgba(255, 255, 255, 0.45), 0 16px 36px rgba(0, 0, 0, 0.6);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
+      padding: 24px 20px;
+    }
+
+    /* Ambient Google TV Background Glow */
+    body::before {
+      content: "";
+      position: fixed;
+      top: -30%;
+      left: -20%;
+      width: 140%;
+      height: 140%;
+      background: radial-gradient(circle at 50% 25%, rgba(56, 189, 248, 0.12) 0%, transparent 55%),
+                  radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.08) 0%, transparent 50%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 980px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+      z-index: 1;
+    }
+
+    /* Minimalist Header */
+    .header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 12px;
+    }
+
+    .tv-logo-badge {
+      width: 68px;
+      height: 68px;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.25);
+      transition: transform 0.3s ease;
+    }
+
+    .tv-logo-badge svg {
+      width: 40px;
+      height: 40px;
+      fill: #38bdf8;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin-top: 4px;
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 540px;
+      line-height: 1.5;
+      font-weight: 300;
+    }
+
+    /* Grid layout for Apps (Google TV Cards) */
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      width: 100%;
+      max-width: 860px;
+    }
+
+    /* Google TV Signature Download Card */
+    .app-card {
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 22px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      text-decoration: none;
+      color: var(--text-main);
+      outline: none;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .card-icon-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.25s ease;
+    }
+
+    .card-icon-wrap svg {
+      width: 26px;
+      height: 26px;
+      fill: #94a3b8;
+      transition: fill 0.25s ease;
+    }
+
+    .card-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .app-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: color 0.25s ease;
+    }
+
+    .app-meta {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.25s ease;
+    }
+
+    .app-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      transition: all 0.25s ease;
+    }
+
+    /* ----------------------------------------------------
+       THE GOOGLE TV SIGNATURE FOCUS EFFECT (Pure Contrast)
+       ---------------------------------------------------- */
+    .app-card:focus,
+    .app-card.simulated-focus {
+      background: var(--focus-bg) !important;
+      color: var(--focus-text) !important;
+      border-color: #ffffff !important;
+      transform: translateY(-5px) scale(1.035);
+      box-shadow: var(--focus-shadow);
+      z-index: 10;
+    }
+
+    .app-card:focus .card-icon-wrap,
+    .app-card.simulated-focus .card-icon-wrap {
+      background: rgba(14, 165, 233, 0.15);
+    }
+
+    .app-card:focus .card-icon-wrap svg,
+    .app-card.simulated-focus .card-icon-wrap svg {
+      fill: #0284c7;
+    }
+
+    .app-card:focus .app-title,
+    .app-card.simulated-focus .app-title {
+      color: #090d16;
+    }
+
+    .app-card:focus .app-meta,
+    .app-card.simulated-focus .app-meta {
+      color: #475569;
+    }
+
+    .app-card:focus .app-tag,
+    .app-card.simulated-focus .app-tag {
+      background: rgba(15, 23, 42, 0.1);
+      color: #0f172a;
+    }
+
+    .app-card:active {
+      transform: scale(0.98);
+    }
+
+    /* Compact Accelerator & Settings Utility Bar */
+    .utility-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      max-width: 860px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 10px 16px;
+    }
+
+    .accelerator-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .utility-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .mirror-pills {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .pill-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .pill-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+    }
+
+    .pill-btn:focus {
+      background: #ffffff;
+      color: #0f172a;
+      border-color: #ffffff;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+      transform: scale(1.05);
+    }
+
+    .pill-btn.active {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: #38bdf8;
+      color: #38bdf8;
+      font-weight: 600;
+    }
+
+    .pill-btn.active:focus {
+      background: #ffffff;
+      color: #0f172a;
+      border-color: #ffffff;
+    }
+
+    .settings-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .settings-btn:focus {
+      background: #ffffff;
+      color: #0f172a;
+      border-color: #ffffff;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+      transform: scale(1.05);
+    }
+
+    /* Trust Footer */
+    .trust-footer {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #64748b;
+      font-size: 0.82rem;
+      margin-top: 4px;
+    }
+
+    .trust-footer svg {
+      width: 14px;
+      height: 14px;
+      fill: #10b981;
+    }
+
+    /* Gamepad Status Toast */
+    .controller-badge {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-size: 0.78rem;
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      z-index: 100;
+      backdrop-filter: blur(8px);
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 680px) {
+      .apps-grid {
+        grid-template-columns: 1fr;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+      .utility-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Minimalist Header -->
+    <header class="header">
+      <div class="tv-logo-badge">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M21 2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7l-2 3v1h8v-1l-2-3h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H3V4h18v12z"/>
+          <path d="M10 7.5v7l6-3.5z" fill="#38bdf8"/>
+        </svg>
+      </div>
+      <h1>Nashid TV</h1>
+      <p class="subtitle">Optimized for Android TV. Fast, lightweight, and perfect for D-pad remote control.</p>
+    </header>
+
+    <!-- Google TV Signature App Grid (2x2 / 4 Grid) -->
+    <main class="apps-grid" id="apps-grid" role="region" aria-label="TV Applications Download">
+      
+      <!-- Card 1: Nashid TV (Default Focused) -->
+      <a href="nashidtv.apk" class="app-card nav-item" id="app-nashid" download="nashidtv.apk" tabindex="0" autofocus>
+        <div class="card-icon-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+          </svg>
+        </div>
+        <div class="card-content">
+          <span class="app-title">Download Nashid TV</span>
+          <div class="app-meta">
+            <span>Version 1.1.04</span>
+            <span>•</span>
+            <span>51 MB</span>
+            <span class="app-tag">Main App</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 2: LS TV -->
+      <a href="ls-tv.apk" class="app-card nav-item" id="app-lstv" download="ls-tv.apk" tabindex="0">
+        <div class="card-icon-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+          </svg>
+        </div>
+        <div class="card-content">
+          <span class="app-title">Download LS TV</span>
+          <div class="app-meta">
+            <span>Version 1.0.0</span>
+            <span>•</span>
+            <span>12 MB</span>
+            <span class="app-tag">Live TV</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 3: Sportzfy -->
+      <a href="Sportzfy_v28.apk" class="app-card nav-item" id="app-sportzfy" download="Sportzfy_v28.apk" tabindex="0">
+        <div class="card-icon-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+          </svg>
+        </div>
+        <div class="card-content">
+          <span class="app-title">Download Sportzfy</span>
+          <div class="app-meta">
+            <span>Version 28</span>
+            <span>•</span>
+            <span>15 MB</span>
+            <span class="app-tag">Sports</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 4: Quick Player -->
+      <a href="QuickPlayer-1104.apk" class="app-card nav-item" id="app-quickplayer" download="QuickPlayer-1104.apk" tabindex="0">
+        <div class="card-icon-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+          </svg>
+        </div>
+        <div class="card-content">
+          <span class="app-title">Download QuickPlayer</span>
+          <div class="app-meta">
+            <span>Version 1.1.04</span>
+            <span>•</span>
+            <span>53 MB</span>
+            <span class="app-tag">Player</span>
+          </div>
+        </div>
+      </a>
+
+    </main>
+
+    <!-- Compact Utility Bar: Accelerator Selector + TV Settings -->
+    <div class="utility-bar">
+      <div class="accelerator-group">
+        <span class="utility-label">
+          <svg style="width:13px;height:13px;fill:#38bdf8;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M7 2v11h3v9l7-12h-4l4-8z"/>
+          </svg>
+          Speed Mirror:
+        </span>
+        <div class="mirror-pills" role="group" aria-label="Download Accelerator Selector">
+          <button type="button" class="pill-btn nav-item active" data-mirror="ghfast" id="pill-ghfast">⚡ ghfast.top</button>
+          <button type="button" class="pill-btn nav-item" data-mirror="ghproxy" id="pill-ghproxy">🚀 gh-proxy.com</button>
+          <button type="button" class="pill-btn nav-item" data-mirror="ghproxy_org" id="pill-ghproxy-org">🚀 gh-proxy.org</button>
+          <button type="button" class="pill-btn nav-item" data-mirror="ghddlc" id="pill-ghddlc">🚀 gh.ddlc.top</button>
+          <button type="button" class="pill-btn nav-item" data-mirror="direct" id="pill-direct">🌐 Direct</button>
+        </div>
+      </div>
+
+      <a href="intent://com.android.settings/#Intent;scheme=android-app;end" class="settings-btn nav-item" id="btn-settings" title="Open TV Settings">
+        <svg style="width:14px;height:14px;fill:currentColor;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+        </svg>
+        <span>TV Settings</span>
+      </a>
+    </div>
+
+    <!-- Trust Footer -->
+    <footer class="trust-footer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
+      </svg>
+      <span>Safe to install • No ads • Privacy friendly • Official Release</span>
+    </footer>
+
+  </div>
+
+  <!-- Gamepad Status Indicator -->
+  <div id="controller-status" class="controller-badge" style="display: none;">
+    <svg style="width:16px;height:16px;fill:currentColor;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H9v2H8v-2H6v-1h2v-2h1v2h2v1zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-3c-.83 0-1.5-.67-1.5-1.5S17.67 9 18.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+    </svg>
+    <span id="controller-name">Xbox Controller Active</span>
+  </div>
+
+  <!-- Dynamic Mirror Acceleration & Xbox/TV Remote Spatial Navigation Script -->
+  <script>
+    const RAW_GITHUB_BASE = 'https://raw.githubusercontent.com/nashidazaz/tv/main/';
+
+    const MIRRORS = {
+      ghfast: {
+        name: 'ghfast.top',
+        prefix: 'https://ghfast.top/' + RAW_GITHUB_BASE
+      },
+      ghproxy: {
+        name: 'gh-proxy.com',
+        prefix: 'https://gh-proxy.com/' + RAW_GITHUB_BASE
+      },
+      ghproxy_org: {
+        name: 'gh-proxy.org',
+        prefix: 'https://gh-proxy.org/' + RAW_GITHUB_BASE
+      },
+      ghddlc: {
+        name: 'gh.ddlc.top',
+        prefix: 'https://gh.ddlc.top/' + RAW_GITHUB_BASE
+      },
+      direct: {
+        name: 'Direct',
+        prefix: ''
+      }
+    };
+
+    const APK_FILES = {
+      nashid: 'nashidtv.apk',
+      lstv: 'ls-tv.apk',
+      sportzfy: 'Sportzfy_v28.apk',
+      quickplayer: 'QuickPlayer-1104.apk'
+    };
+
+    function updateDownloadLinks(mirrorKey) {
+      if (!MIRRORS[mirrorKey]) mirrorKey = 'ghfast';
+      try {
+        localStorage.setItem('nashid_download_mirror', mirrorKey);
+      } catch (e) {}
+
+      const mirror = MIRRORS[mirrorKey];
+      const isDirect = mirrorKey === 'direct';
+
+      const links = {
+        'app-nashid': APK_FILES.nashid,
+        'app-lstv': APK_FILES.lstv,
+        'app-sportzfy': APK_FILES.sportzfy,
+        'app-quickplayer': APK_FILES.quickplayer
+      };
+
+      for (const [id, file] of Object.entries(links)) {
+        const el = document.getElementById(id);
+        if (el) el.href = isDirect ? file : mirror.prefix + file;
+      }
+
+      document.querySelectorAll('.pill-btn').forEach(btn => {
+        const active = btn.getAttribute('data-mirror') === mirrorKey;
+        btn.classList.toggle('active', active);
+      });
+    }
+
+    // ----------------------------------------------------
+    // SPATIAL NAVIGATION & XBOX GAMEPAD ENGINE
+    // ----------------------------------------------------
+    let lastNavTime = 0;
+    const NAV_COOLDOWN = 180; // ms debounce between D-pad clicks
+
+    function getNavItems() {
+      return Array.from(document.querySelectorAll('.nav-item'));
+    }
+
+    function moveSpatialFocus(direction) {
+      const items = getNavItems();
+      let current = document.activeElement;
+      let currentIndex = items.indexOf(current);
+
+      if (currentIndex === -1) {
+        items[0].focus();
+        return;
+      }
+
+      const rect = current.getBoundingClientRect();
+      const currentCenter = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+
+      let bestCandidate = null;
+      let minDistance = Infinity;
+
+      items.forEach((item, idx) => {
+        if (item === current) return;
+        const targetRect = item.getBoundingClientRect();
+        const targetCenter = { x: targetRect.left + targetRect.width / 2, y: targetRect.top + targetRect.height / 2 };
+
+        const dx = targetCenter.x - currentCenter.x;
+        const dy = targetCenter.y - currentCenter.y;
+
+        let isValidDirection = false;
+        if (direction === 'up' && dy < -10) isValidDirection = true;
+        if (direction === 'down' && dy > 10) isValidDirection = true;
+        if (direction === 'left' && dx < -10) isValidDirection = true;
+        if (direction === 'right' && dx > 10) isValidDirection = true;
+
+        if (isValidDirection) {
+          const distance = Math.hypot(dx, dy);
+          if (distance < minDistance) {
+            minDistance = distance;
+            bestCandidate = item;
+          }
+        }
+      });
+
+      if (bestCandidate) {
+        bestCandidate.focus();
+      } else {
+        if (direction === 'right' && currentIndex < items.length - 1) items[currentIndex + 1].focus();
+        if (direction === 'left' && currentIndex > 0) items[currentIndex - 1].focus();
+        if (direction === 'down' && currentIndex < items.length - 1) items[currentIndex + 1].focus();
+        if (direction === 'up' && currentIndex > 0) items[currentIndex - 1].focus();
+      }
+    }
+
+    // Keyboard Arrow Spatial Handling (Laptop Testing)
+    window.addEventListener('keydown', (e) => {
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        e.preventDefault();
+        const dirMap = {
+          'ArrowUp': 'up',
+          'ArrowDown': 'down',
+          'ArrowLeft': 'left',
+          'ArrowRight': 'right'
+        };
+        moveSpatialFocus(dirMap[e.key]);
+      }
+    });
+
+    // Gamepad API Poll Loop
+    function pollGamepad() {
+      const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+      let activeGamepad = null;
+
+      for (let i = 0; i < gamepads.length; i++) {
+        if (gamepads[i]) {
+          activeGamepad = gamepads[i];
+          break;
+        }
+      }
+
+      const statusEl = document.getElementById('controller-status');
+      const nameEl = document.getElementById('controller-name');
+
+      if (activeGamepad) {
+        if (statusEl && statusEl.style.display === 'none') {
+          statusEl.style.display = 'flex';
+          nameEl.textContent = activeGamepad.id.includes('Xbox') ? 'Xbox Controller Active' : 'Gamepad Connected';
+          setTimeout(() => { statusEl.style.display = 'none'; }, 4000);
+        }
+
+        const now = Date.now();
+        if (now - lastNavTime > NAV_COOLDOWN) {
+          const b = activeGamepad.buttons;
+          const a = activeGamepad.axes;
+
+          // D-Pad or Left Stick
+          const dUp = (b[12] && b[12].pressed) || a[1] < -0.5;
+          const dDown = (b[13] && b[13].pressed) || a[1] > 0.5;
+          const dLeft = (b[14] && b[14].pressed) || a[0] < -0.5;
+          const dRight = (b[15] && b[15].pressed) || a[0] > 0.5;
+
+          if (dUp) { moveSpatialFocus('up'); lastNavTime = now; }
+          else if (dDown) { moveSpatialFocus('down'); lastNavTime = now; }
+          else if (dLeft) { moveSpatialFocus('left'); lastNavTime = now; }
+          else if (dRight) { moveSpatialFocus('right'); lastNavTime = now; }
+
+          // 'A' Button (Button 0) = Click
+          if (b[0] && b[0].pressed) {
+            if (document.activeElement) {
+              document.activeElement.click();
+              lastNavTime = now + 150;
+            }
+          }
+        }
+      }
+
+      requestAnimationFrame(pollGamepad);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      let savedMirror = 'ghfast';
+      try {
+        savedMirror = localStorage.getItem('nashid_download_mirror') || 'ghfast';
+      } catch (e) {}
+      updateDownloadLinks(savedMirror);
+
+      document.querySelectorAll('.pill-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          updateDownloadLinks(btn.getAttribute('data-mirror'));
+        });
+      });
+
+      // Initial TV D-pad focus
+      const firstCard = document.getElementById('app-nashid');
+      if (firstCard) firstCard.focus();
+
+      // Start Gamepad listening
+      requestAnimationFrame(pollGamepad);
+    });
+
+    window.addEventListener('gamepadconnected', (e) => {
+      console.log('Gamepad connected:', e.gamepad.id);
+      const statusEl = document.getElementById('controller-status');
+      if (statusEl) {
+        statusEl.style.display = 'flex';
+        setTimeout(() => { statusEl.style.display = 'none'; }, 4000);
+      }
+    });
+  </script>
+</body>
+</html>
