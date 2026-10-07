@@ -16,7 +16,7 @@ A finalized, responsive, visually stunning, remote D-pad friendly landing page t
   - Solid dark icon badge container (`#141724` unselected, `#0f131c` selected).
   - Spacious 2-Column responsive TV grid (`max-width: 880px`) with ambient radial glow.
 - **Hosted Applications (8 Total)**:
-  1. **Nashid TV** (`nashidtv.apk` - 51 MB)
+  1. **QuickPlayer** (`quickplay.apk` - 54 MB)
   2. **LS TV** (`ls-tv.apk` - 10 MB)
   3. **Sportzfy** (`Sportzfy_v28.apk` - 15 MB)
   4. **iMPlayer Official** (`implayer_411_official.apk` - 98 MB)
